@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.wendao.mapper.UserMapper">
+
+    <insert id="insertUser">
+        INSERT INTO user
+        (user_id, nickname, password, salt,
+         avatar, achieve_value, school,
+         login_ip, create_time, login_type,
+         sex, signature)
+        VALUES (#{userId}, #{nickname}, #{password},
+                #{salt}, #{avatar}, #{achieveValue},
+                #{school}, #{loginIp}, #{createTime},
+                #{loginType}, #{sex}, #{signature})
+    </insert>
+
+    <select id="selectByUserId" resultType="com.example.wendao.entity.User">
+        SELECT user_id,
+               nickname,
+               password,
+               salt,
+               avatar,
+               achieve_value,
+               school,
+               login_ip,
+               create_time,
+               login_type,
+               sex,
+               signature
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="top10LeaderBoard" resultType="com.example.wendao.entity.User">
+        select user_id,
+               nickname,
+               password,
+               salt,
+               avatar,
+               achieve_value,
+               school,
+               login_ip,
+               create_time,
+               login_type,
+               sex,
+               signature
+        from user
+        order by achieve_value
+                desc limit 0, 10
+    </select>
+
+    <update id="updateByUserId" >
+        UPDATE user
+        <set>
+            <if test="nickname != null">nickname = #{nickname},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="salt != null">salt = #{salt},</if>
+            <if test="avatar != null">avatar = #{avatar},</if>
+            <if test="achieveValue != null">achieve_value = #{achieveValue},</if>
+            <if test="school != null">school = #{school},</if>
+            <if test="loginIp != null">login_ip = #{loginIp},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="loginType != null">login_type = #{loginType},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="signature != null">signature = #{signature}</if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
+    <update id="resetAchieveValue">
+        update user
+        set achieve_value = 0
+    </update>
+
+
+</mapper>

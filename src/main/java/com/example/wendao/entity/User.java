@@ -1,6 +1,8 @@
 package com.example.wendao.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -11,6 +13,8 @@ import java.util.Date;
  * @version: 1.0
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     /**
@@ -44,7 +48,7 @@ public class User {
     private int achieveValue;
 
     /**
-     * 学习
+     * 学校
      */
     private String school;
 
