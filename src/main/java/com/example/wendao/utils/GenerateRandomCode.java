@@ -20,17 +20,17 @@ public class GenerateRandomCode {
     private static Random random = new Random();
     private static Set<Integer> usedCodes = new HashSet<Integer>();
 
-    public static int generateRandomVerificationCode() {
+    public static String generateRandomVerificationCode() {
         while (true) {
             // 生成6位数
-            int code = random.nextInt(900000) + 100000;
+            Integer code = random.nextInt(900000) + 100000;
             // 检查是否已经生成过
             if (!usedCodes.contains(code)) {
                 // 添加到哈希表
                 usedCodes.add(code);
                 // 返回6位数
-                log.info("你的验证码为:" + usedCodes.toString());
-                return code;
+                log.info("你的验证码为:" + code.toString());
+                return code.toString();
             }
         }
     }
