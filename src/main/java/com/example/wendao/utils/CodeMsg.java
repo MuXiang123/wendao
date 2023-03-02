@@ -35,7 +35,7 @@ public class CodeMsg {
     public static CodeMsg GITHUB_CODE_OR_STATE_EMPTY = new CodeMsg(100004, "Github获取code或者state为null");
     public static CodeMsg GITHUB_REQUEST_TOKEN_EMPTY = new CodeMsg(100005, "Github请求获取Token失败");
     public static CodeMsg GITHUB_REQUEST_USER_INFO_EMPTY = new CodeMsg(100006, "Github请求获取用户信息失败");
-
+    public static CodeMsg FAILED_TO_SEND_THE_VERIFICATION_CODE = new CodeMsg(100007, "验证码发送失败");
 
     /**
      * 个人中心模块错误

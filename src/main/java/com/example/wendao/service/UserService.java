@@ -1,6 +1,7 @@
 package com.example.wendao.service;
 
 import com.example.wendao.entity.User;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -40,4 +41,18 @@ public interface UserService {
      * @return
      */
     List<User> top10LeaderBoard();
+
+    /**
+     * 发送验证码
+     * @return
+     */
+    String sendSMSCode(String userId);
+
+    /**
+     * 腾讯云对象存储上传图片
+     * @param multipartFile
+     * @param userId
+     * @return
+     */
+    String uploadImages(MultipartFile multipartFile, String userId);
 }
