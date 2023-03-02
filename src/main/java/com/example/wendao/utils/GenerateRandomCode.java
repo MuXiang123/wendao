@@ -11,7 +11,7 @@ import java.util.Set;
 
 /**
  * @author: zhk
- * @description:
+ * @description: 6位随机验证码生成工具类
  * @date: 2023/3/1 22:01
  * @version: 1.0
  */
