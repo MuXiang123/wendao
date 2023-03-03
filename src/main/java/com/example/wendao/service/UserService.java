@@ -43,12 +43,6 @@ public interface UserService {
     List<User> top10LeaderBoard();
 
     /**
-     * 发送验证码
-     * @return
-     */
-    String sendSMSCode(String userId);
-
-    /**
      * 腾讯云对象存储上传图片
      * @param multipartFile
      * @param userId
