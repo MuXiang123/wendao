@@ -4,6 +4,7 @@ import com.example.wendao.entity.Category;
 import com.example.wendao.mapper.CategoryMapper;
 import com.example.wendao.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @date: 2023/3/3 11:13
  * @version: 1.0
  */
+@Service
 public class CategoryServiceImpl implements CategoryService {
     @Autowired(required = false)
     CategoryMapper categoryMapper;

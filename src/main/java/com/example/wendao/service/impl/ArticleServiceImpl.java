@@ -97,7 +97,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article selectArticleByTwoUserId(int articleId) {
+    public Article selectArticleByUserId(int articleId) {
         return articleMapper.selectArticleByUserId(articleId);
     }
 
