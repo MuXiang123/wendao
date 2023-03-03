@@ -1,6 +1,7 @@
 package com.example.wendao.vo;
 
 import com.example.wendao.entity.Article;
+import lombok.Data;
 
 /**
  * @author: zhk
@@ -8,6 +9,7 @@ import com.example.wendao.entity.Article;
  * @date: 2023/3/3 9:39
  * @version: 1.0
  */
+@Data
 public class ArticleUserVo extends Article {
     private String nickname;
 

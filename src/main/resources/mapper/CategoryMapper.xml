@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.wendao.mapper.CategoryMapper">
+
+    <insert id="insertCategory">
+        insert into category(category_id, category_name)
+        values (#{categoryId}, #{categoryName})
+    </insert>
+    <update id="updateCategory">
+        update category
+        <set>
+            <if test='categoryName != null'>category_name = #{categoryName}</if>
+        </set>
+        where category_id = #{categoryId}
+    </update>
+    <delete id="deleteCategoryById">
+        delete
+        from category
+        where category_id = #{categoryId}
+    </delete>
+    <select id="selectCategoryById" resultType="com.example.wendao.entity.Category">
+        select category_id, category_name
+        from category
+        where category_id = #{categoryId}
+    </select>
+    <select id="selectCategoryByName" resultType="com.example.wendao.entity.Category">
+        select category_id, category_name
+        from category
+        where category_name = #{categoryName}
+    </select>
+    <select id="selectAllCategory" resultType="com.example.wendao.entity.Category">
+        select category_id, category_name
+        from category
+    </select>
+
+</mapper>

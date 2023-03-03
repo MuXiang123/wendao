@@ -1,6 +1,7 @@
 package com.example.wendao.vo;
 
 import com.example.wendao.entity.Comment;
+import lombok.Data;
 
 /**
  * @author: zhk
@@ -8,6 +9,7 @@ import com.example.wendao.entity.Comment;
  * @date: 2023/3/3 9:40
  * @version: 1.0
  */
+@Data
 public class CommentUserVo extends Comment {
     /**
      * 用户头像
