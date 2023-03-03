@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.wendao.mapper.FansMapper">
+    <insert id="insertFans">
+        insert into fans (user_id, fans_id, created_time)
+        values (#{userId}, #{fansId}, #{createdTime})
+    </insert>
+    <delete id="deleteFans">
+        delete
+        from fans
+        where user_id = #{userId}
+          and fans_id = #{fansId}
+    </delete>
+    <select id="selectAllFansByUserId" resultType="com.example.wendao.entity.Fans">
+        select id, user_id, fans_id, created_time
+        from fans
+        where user_id = #{userId}
+    </select>
+</mapper>
