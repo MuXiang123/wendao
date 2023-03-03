@@ -4,6 +4,7 @@ import com.example.wendao.entity.Notice;
 import com.example.wendao.mapper.NoticeMapper;
 import com.example.wendao.service.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
  * @date: 2023/3/3 14:59
  * @version: 1.0
  */
+@Service
 public class NoticeServiceImpl implements NoticeService {
     @Autowired(required = false)
     NoticeMapper noticeMapper;

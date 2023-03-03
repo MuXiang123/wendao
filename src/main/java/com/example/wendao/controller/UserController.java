@@ -2,34 +2,16 @@ package com.example.wendao.controller;
 
 import com.example.wendao.entity.User;
 import com.example.wendao.service.UserService;
-import com.example.wendao.utils.CodeMsg;
 import com.example.wendao.utils.Result;
-import com.google.gson.Gson;
-import com.qcloud.cos.COSClient;
-import com.qcloud.cos.model.PutObjectRequest;
-import com.qcloud.cos.model.PutObjectResult;
-import com.qiniu.http.Response;
-import com.qiniu.storage.Configuration;
-import com.qiniu.storage.Region;
-import com.qiniu.storage.UploadManager;
-import com.qiniu.storage.model.DefaultPutRet;
-import com.qiniu.util.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.util.Objects;
+
 
 /**
  * @author: zhk
@@ -37,7 +19,7 @@ import java.util.Objects;
  * @date: 2023/3/1 21:10
  * @version: 1.0
  */
-@Controller
+@RestController
 public class UserController {
     private static Logger log = LoggerFactory.getLogger(UserController.class);
     @Autowired
