@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ import java.util.List;
  * @date: 2023/3/3 11:06
  * @version: 1.0
  */
+@Service
 public class ArticleServiceImpl implements ArticleService {
     private static Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
 

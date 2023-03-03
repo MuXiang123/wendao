@@ -81,7 +81,7 @@ public interface ArticleMapper {
     List<Article> selectArticleByKeyword(String keyword);
 
     /**
-     * 根据用户id查询文章
+     * 根据文章id查询作者
      * @param articleId
      * @return
      */
