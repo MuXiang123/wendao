@@ -11,12 +11,31 @@ import java.util.List;
  * @version: 1.0
  */
 public interface FollowService {
+    /**
+     * 新增关注
+     * @param follow
+     */
     void insertFollow(Follow follow);
 
+    /**
+     * 取消关注
+     * @param userId
+     * @param followId
+     */
     void deleteFollow(String userId, String followId);
 
+    /**
+     * 查询当前用户的所有关注
+     * @param userId
+     * @return
+     */
     List<Follow> selectAllFollowByUserId(String userId);
 
+    /**
+     * 查询全部关注者关注 ID
+     * @param followId
+     * @return
+     */
     List<Follow> selectAllFollowByFollowId(String followId);
 
 }

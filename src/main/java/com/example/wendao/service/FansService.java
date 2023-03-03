@@ -11,6 +11,7 @@ import java.util.List;
  * @version: 1.0
  */
 public interface FansService {
+
     void insertFans(Fans fans);
 
     void deleteFans(String userId, String followId);
