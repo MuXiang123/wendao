@@ -14,14 +14,24 @@ import java.util.List;
  * @version: 1.0
  */
 public interface FansMapper {
-    String TABLE_NAME = " fans ";
-    String INSERT_VALUE = " user_id, fans_id, created_time ";
-    String SELECT_VALUE = " id, user_id, fans_id, created_time ";
-
+    /**
+     * 新增粉丝
+     * @param fans
+     */
     void insertFans(Fans fans);
 
+    /**
+     * 删除粉丝
+     * @param userId
+     * @param fansId
+     */
     void deleteFans(String userId, String fansId);
 
+    /**
+     * 展示用户的所有粉丝
+     * @param userId
+     * @return
+     */
     List<Fans> selectAllFansByUserId(String userId);
 
 }

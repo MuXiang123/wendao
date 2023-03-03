@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.wendao.mapper.FollowMapper">
+    <insert id="insertFollow">
+        insert into follow (user_id, follow_id, created_time)
+        values (#{userId}, #{followId}, #{createdTime})
+    </insert>
+    <delete id="deleteFollow">
+        delete
+        from follow
+        where user_id = #{userId}
+          and follow_id = #{followId}
+    </delete>
+    <select id="selectAllFollowByUserId" resultType="com.example.wendao.entity.Follow">
+        select id, user_id, follow_id, created_time
+        from follow
+        where user_id = #{userId}
+    </select>
+    <select id="selectAllFollowByFollowId" resultType="com.example.wendao.entity.Follow">
+        select id, user_id, follow_id, created_time
+        from follow
+        where follow_id = #{followId}
+    </select>
+</mapper>
