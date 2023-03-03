@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.wendao.mapper.ArticleMapper">
+
+    <insert id="insertArticle">
+        insert into article(article_title, article_summary, article_content,
+                            article_view_count, article_like_count, article_comment_count,
+                            created_time, update_time, is_deleted,
+                            article_category_id, article_category_name, article_user_id)
+        values (#{articleTitle},
+                #{articleSummary}, #{articleContent}, #{articleViewCount}, #{articleLikeCount}, #{articleCommentCount},
+                #{createdTime}, #{updateTime}, #{isDeleted}, #{articleCategoryId}, #{articleCategoryName},
+                #{articleUserId})
+
+    </insert>
+    <update id="updateArticle">
+        update article
+        <set>
+            <if test='articleTitle != null'>article_title = #{articleTitle},</if>
+            <if test='articleSummary != null'>article_summary = #{articleSummary},</if>
+            <if test='articleContent != null'>article_content = #{articleContent},</if>
+            <if test='articleViewCount != null'>article_view_count = #{articleViewCount},</if>
+            <if test='articleLikeCount != null'>article_like_count = #{articleLikeCount},</if>
+            <if test='articleCommentCount != null'>article_comment_count = #{articleCommentCount},</if>
+            <if test='createdTime != null'>created_time = #{createdTime},</if>
+            <if test='updateTime != null'>update_time = #{updateTime},</if>
+            <if test='isDeleted != null'>is_deleted = #{isDeleted},</if>
+            <if test='articleCategoryName != null'>article_category_name = #{articleCategoryName}</if>
+        </set>
+        where article_id = #{articleId}
+    </update>
+
+    <delete id="deleteArticle">
+        update article
+        set is_deleted = 1
+        where article_id = #{articleId}
+    </delete>
+
+    <select id="selectArticleByArticleId" resultType="com.example.wendao.entity.Article">
+        select article_id,
+               article_title,
+               article_summary,
+               article_content,
+               article_view_count,
+               article_like_count,
+               article_comment_count,
+               created_time,
+               update_time,
+               is_deleted,
+               article_category_id,
+               article_category_name,
+               article_user_id
+        from article
+        where article_id = #{articleId}
+          and is_deleted = 0
+    </select>
+    <select id="selectArticleByCategoryId" resultType="com.example.wendao.entity.Article">
+        select article_id,
+               article_title,
+               article_summary,
+               article_content,
+               article_view_count,
+               article_like_count,
+               article_comment_count,
+               created_time,
+               update_time,
+               is_deleted,
+               article_category_id,
+               article_category_name,
+               article_user_id
+        from article
+        where article_category_id = #{categoryId}
+          and is_deleted = 0
+        order by update_time
+    </select>
+
+    <select id="selectArticleByLikeCount" resultType="com.example.wendao.entity.Article">
+        select article_id,
+               article_title,
+               article_summary,
+               article_content,
+               article_view_count,
+               article_like_count,
+               article_comment_count,
+               created_time,
+               update_time,
+               is_deleted,
+               article_category_id,
+               article_category_name,
+               article_user_id
+        from article
+        where is_deleted = 0
+        order by article_like_count, update_time
+    </select>
+    <select id="selectArticleByCommentCount" resultType="com.example.wendao.entity.Article">
+        select article_id,
+               article_title,
+               article_summary,
+               article_content,
+               article_view_count,
+               article_like_count,
+               article_comment_count,
+               created_time,
+               update_time,
+               is_deleted,
+               article_category_id,
+               article_category_name,
+               article_user_id
+        from article
+        where
+            is_deleted = 0
+        order by article_like_count, update_time
+    </select>
+    <select id="selectArticleByViewCount" resultType="com.example.wendao.vo.ArticleUserVo">
+        select article.*, user.nickname, user.avatar
+        from article
+                 inner join
+             user
+        where article.article_user_id = user.user_id
+          and article.is_deleted = 0
+        order by article.article_view_count desc, article.update_time desc
+        limit 0, 10
+    </select>
+    <select id="selectArticleBySchool" resultType="com.example.wendao.vo.ArticleUserVo">
+        select article.*, user.nickname, user.avatar, user.school
+        from article
+                 inner join user
+        where article.article_user_id = user.user_id
+          and user.school = #{schoolName}
+          and article.article_category_id = #{categoryId}
+          and article.is_deleted = 0
+        order by article.update_time
+    </select>
+    <select id="selectArticleByKeyword" resultType="com.example.wendao.entity.Article">
+        select article_title,
+               article_summary,
+               article_content,
+               article_view_count,
+               article_comment_count,
+               created_time,
+               update_time,
+               is_deleted,
+               article_category_id,
+               article_category_name,
+               article_user_id
+        from article
+        where article_title like
+              concat('%', #{keyword}, '%')
+           or article_content like concat('%', #{keyword}, '%') and is_deleted = 0
+    </select>
+    <select id="selectArticleByUserId" resultType="com.example.wendao.entity.Article">
+        select *
+        from article,
+             user
+        where article_user_id = user_id
+          and article_id = #{articleId}
+          and is_deleted = 0
+    </select>
+    <select id="selectAllArticle" resultType="com.example.wendao.entity.Article">
+        select *
+        from article
+        where is_deleted = 0
+    </select>
+    <select id="selectAllArticleIndexViewData" resultType="com.example.wendao.vo.ArticleUserVo">
+        select article.*, user.*
+        from article
+                 inner join user
+        where article_user_id = user_id
+          and is_deleted = 0
+    </select>
+    <select id="selectAllArtilceCategoryData" resultType="com.example.wendao.vo.ArticleUserVo">
+        select article.*, user.*
+        from article
+                 inner join user
+        where article_user_id = user_id
+          and article_category_id = #{categoryId}
+          and article.is_deleted = 0
+    </select>
+    <select id="selectAllArticleDetail" resultType="com.example.wendao.vo.ArticleUserVo">
+        select article_title,
+               article_summary,
+               article_content,
+               article_view_count,
+               article_comment_count,
+               created_time,
+               update_time,
+               is_deleted,
+               article_category_id,
+               article_category_name,
+               article_user_id,
+               user.*
+        from article
+                 inner join user
+        where article_user_id = user_id
+          and article_id = #{articleId}
+          and article.is_deleted = 0
+    </select>
+
+
+</mapper>
