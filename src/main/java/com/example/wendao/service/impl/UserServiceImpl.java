@@ -8,6 +8,7 @@ import com.example.wendao.redis.VerifyCodeKey;
 import com.example.wendao.service.UserService;
 import com.example.wendao.utils.GenerateRandomCode;
 import com.example.wendao.utils.Result;
+import com.mchange.io.FileUtils;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.PutObjectRequest;
 import com.qcloud.cos.model.PutObjectResult;
@@ -29,6 +30,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author: zhk
@@ -73,31 +75,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String uploadImages(MultipartFile multipartFile, String userId) {
+    public String uploadImages(MultipartFile multipartFile) {
         //MultipartFile转file
-        File localFile = new File(multipartFile.getOriginalFilename());
+        //获取最后一个点的索引值
+        int doPos = multipartFile.getOriginalFilename().lastIndexOf(".");
+        //获取扩展名
+        String fileExt = multipartFile.getOriginalFilename().substring(doPos + 1).toLowerCase();
+        String fileName = UUID.randomUUID().toString().replaceAll("-", "") + "." + fileExt;
+        // 若须要防止生成的临时文件重复,能够在文件名后添加随机码
         try {
+            File localFile = File.createTempFile(fileName, fileExt);
             multipartFile.transferTo(localFile);
+            log.info(multipartFile.getOriginalFilename());
+            log.info(String.valueOf(multipartFile.getSize()));
+            // 指定文件将要存放的存储桶
+            String bucketName = "wendao-1316683032";
+            // 指定文件上传到 COS 上的路径，即对象键。例如对象键为 folder/picture.jpg，则表示将文件 picture.jpg 上传到 folder 路径下
+
+            String key = "avatar/" + fileName;
+            PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, localFile);
+            PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
+            log.info("putObjectResult" + putObjectResult.toString());
+            //关闭连接
+            cosClient.shutdown();
+
+            //设置过期时间
+            Date expiration = new Date(System.currentTimeMillis() + 5 * 60 * 10000);
+            //获取图片地址
+            URL oldUrl = cosClient.generatePresignedUrl(bucketName, key, expiration);
+            String url = oldUrl.toString();
+            // 直接查找到第一个？的位置
+            url = url.substring(0, url.indexOf("?"));
+            log.info("头像地址: " + url);
+            return url;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            log.error("文件创建错误:{}",e);
+            return "";
         }
-        // 指定文件将要存放的存储桶
-        String bucketName = "wendao-1316683032";
-        // 指定文件上传到 COS 上的路径，即对象键。例如对象键为 folder/picture.jpg，则表示将文件 picture.jpg 上传到 folder 路径下
-        String key = "avatar/"+userId;
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, localFile);
-        PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
-        log.info("putObjectResult"+putObjectResult.toString());
-        //关闭连接
-        cosClient.shutdown();
-        //设置过期时间
-        Date expiration = new Date(System.currentTimeMillis() + 5 * 60 * 10000);
-        //获取图片地址
-        URL oldUrl = cosClient.generatePresignedUrl(bucketName, key, expiration);
-        String url = oldUrl.toString();
-        // 直接查找到第一个？的位置
-        url = url.substring(0, url.indexOf("?"));
-        log.info("用户: "+userId+"\n头像地址: "+url);
-        return url;
     }
 }

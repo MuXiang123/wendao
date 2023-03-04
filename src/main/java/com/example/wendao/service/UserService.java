@@ -45,8 +45,7 @@ public interface UserService {
     /**
      * 腾讯云对象存储上传图片
      * @param multipartFile
-     * @param userId
      * @return
      */
-    String uploadImages(MultipartFile multipartFile, String userId);
+    String uploadImages(MultipartFile multipartFile);
 }

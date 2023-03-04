@@ -22,7 +22,7 @@ public class CosClientConfig {
     @Value("${tencent.cos.secretId}")
     private String secretId;
 
-    @Value("{tencent.cos.secretKey")
+    @Value("${tencent.cos.secretKey}")
     private String secretKey;
 
     @Bean
