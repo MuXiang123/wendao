@@ -1,9 +1,7 @@
 package com.example.wendao.mapper;
 
 import com.example.wendao.entity.Follow;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
+
 
 import java.util.List;
 
