@@ -2,6 +2,7 @@ package com.example.wendao.controller;
 
 import com.example.wendao.entity.User;
 import com.example.wendao.service.UserService;
+import com.example.wendao.utils.CodeMsg;
 import com.example.wendao.utils.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +39,6 @@ public class UserController {
     public Result<User> userInfo(HttpServletRequest request) {
         User user = loginController.getUserInfo(request);
         String userId = user.getUserId();
-
         return Result.success(userService.selectByUserId(userId));
     }
 
@@ -46,46 +46,35 @@ public class UserController {
     @PostMapping("/update/userInfo")
     @ResponseBody
     public Result<Boolean> updateUserInfo(HttpServletResponse response, @RequestBody User user) {
-        // 更新之前，需要将从前端传过来的图片信息，上传到七牛云上去，然后存入数据库的话是一个链接
+        // 更新之前，需要将从前端传过来的图片信息，上传到腾讯云上去，然后存入数据库的话是一个链接
         // 需要更新的是用户昵称，用户头像，用户性别，用户学校，用户的个性签名
-        String nickname = user.getNickname();
-        // 这里应该获取的是前端传过来的url链接
-        String avatar = user.getAvatar();
-        int sex = user.getSex();
-        String school = user.getSchool();
-        String signature = user.getSignature();
-        String userId = user.getUserId();
-
-        //User u = new User();
-
-        user.setNickname(nickname);
-        user.setAvatar(avatar);
-        user.setSex(sex);
-        user.setSchool(school);
-        user.setSignature(signature);
-        user.setUserId(userId);
-
-
         // 重新设置Cookie，即更新Redis中User的信息
         loginController.addCookie(response, user);
         userService.updateByUserId(user);
-
         return Result.success(true);
-
     }
 
     /**
-     * 而且在postman测试工具的时候，必须要不仅选择文件，还要在key中写file, 不然会报错空指针异常
+     * 而且在postman测试工具的时候，必须要不仅选择文件，还要在key中写multipartFile, 不然会报错空指针异常
      *
-     * @param multipartFile
+     * @param file
      * @return
      */
     @PostMapping("/upload/images")
     @ResponseBody
-    public Result<String> uploadImages(MultipartFile multipartFile, String userId) {
-        if (multipartFile != null) {
-            String url = userService.uploadImages(multipartFile, userId);
-            if (url != null && "".equals(url)) {
+    public Result<String> uploadImages(MultipartFile file) {
+        if (file != null) {
+            if (file.getSize() > 1024 * 1024 * 4) {
+                return new Result<>("文件大小不能大于M");
+            }
+            String suffix = file.getOriginalFilename().
+                    substring(file.getOriginalFilename().lastIndexOf(".") + 1,
+                            file.getOriginalFilename().length());
+            if (!"jpg,jpeg,gif,png".toUpperCase().contains(suffix.toUpperCase())) {
+                return new Result<>("请选择jpg,jpeg,gif,png格式的图片");
+            }
+            String url = userService.uploadImages(file);
+            if (url != null && !"".equals(url)) {
                 return Result.success(url);
             } else {
                 return new Result<>("上传失败");

@@ -2,7 +2,7 @@ package com.example.wendao.async;
 
 /**
  * @author: zhk
- * @description: 事件标识
+ * @description: 标识事件类型
  * @date: 2023/3/3 15:53
  * @version: 1.0
  */

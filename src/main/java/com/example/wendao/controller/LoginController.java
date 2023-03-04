@@ -1,5 +1,6 @@
 package com.example.wendao.controller;
 
+import com.example.wendao.dto.UserDto;
 import com.example.wendao.entity.User;
 import com.example.wendao.redis.JedisService;
 import com.example.wendao.redis.UserTokenKey;
@@ -20,10 +21,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +51,7 @@ public class LoginController {
     public static final String USER_TOKEN = "token";
 
     @GetMapping("/verifyLoginInfo")
-    public Result<CodeMsg> loginVerify(HttpServletResponse response, String userId, String code) {
+    public Result<CodeMsg> loginVerify( String userId, String code, HttpServletResponse response) {
         String verifyCode = jedisService.getKey(VerifyCodeKey.verifyCodeKeyLogin, code, String.class);
         User user = userService.selectByUserId(userId);
         if (user == null) {
@@ -70,17 +68,18 @@ public class LoginController {
     /**
      * 提供一个可以提供手机号+密码的方式进行登录
      */
-    @GetMapping("/loginPassword")
-    public Result<CodeMsg> loginPassword(String userId, String password) {
-        User user = userService.selectByUserId(userId);
+    @PostMapping("/loginPassword")
+    public Result<CodeMsg> loginPassword(@RequestBody UserDto userDto, HttpServletResponse response) {
+        User user = userService.selectByUserId(userDto.getUserId());
         if (user == null) {
             return Result.error(CodeMsg.UNREGISTER_PHONE);
         }
 
-        if (!(user.getPassword().equals(DigestUtils.md5Hex(password + user.getSalt())))) {
+        if (!(user.getPassword().equals(DigestUtils.md5Hex(userDto.getPassword() + user.getSalt())))) {
             return Result.error(CodeMsg.PASSWORD_ERROR);
         } else {
-            return Result.success(CodeMsg.SUCCESS);
+            addCookie(response, user);
+            return new Result<>(CodeMsg.SUCCESS);
         }
     }
 

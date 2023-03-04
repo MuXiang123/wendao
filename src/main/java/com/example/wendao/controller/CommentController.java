@@ -1,6 +1,7 @@
 package com.example.wendao.controller;
 
 import com.example.wendao.async.EventModel;
+import com.example.wendao.async.EventProducer;
 import com.example.wendao.async.EventType;
 import com.example.wendao.entity.Article;
 import com.example.wendao.entity.Comment;
@@ -53,8 +54,9 @@ public class CommentController {
      */
     @PostMapping("/insert/comment")
     @ResponseBody
-    public Result<Boolean> commentArticle(HttpServletRequest request, @RequestParam(value
-            = "articleId", required = false) Integer articleId, @RequestParam(value = "content", required = false) String content) {
+    public Result<Boolean> commentArticle(HttpServletRequest request,
+                                          @RequestParam(value = "articleId", required = false) Integer articleId,
+                                          @RequestParam(value = "content", required = false) String content) {
         User user = loginController.getUserInfo(request);
         if (user == null) {
             return Result.error(CodeMsg.ERROR);
@@ -77,7 +79,7 @@ public class CommentController {
         // 然后，需要将评论这个异步通知，发给被评论的用户
         EventModel eventModel = new EventModel();
 
-        String articleAuthor = articleService.selectArticleByTwoUserId(articleId).getArticleUserId();
+        String articleAuthor = articleService.selectArticleByUserId(articleId).getArticleUserId();
         // 获取Comment表中最新的comment_id,即表示当前的comment对象
         int commentId = commentService.selectLastInsertCommentId();
         logger.info("评论的id:" + commentId);
@@ -93,7 +95,6 @@ public class CommentController {
         User publishUser = userService.selectByUserId(articleAuthor);
         publishUser.setAchieveValue(publishUser.getAchieveValue() + 10);
         userService.updateByUserId(publishUser);
-
 
         return Result.success(true);
 

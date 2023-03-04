@@ -58,7 +58,7 @@ public class ArticleController {
         }
 
         log.info(article.toString());
-        // 需要通过闯过来的categoryName来查找出categoryId
+        // 需要通过传过来的categoryName来查找出categoryId
         Category category = categoryService.selectCategoryByName(article.getArticleCategoryName());
         log.info("category对象为：{}", category.toString());
 
@@ -118,7 +118,6 @@ public class ArticleController {
         }
 
     }
-
 
     @GetMapping("/search")
     @ResponseBody

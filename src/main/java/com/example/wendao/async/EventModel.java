@@ -1,6 +1,5 @@
 package com.example.wendao.async;
 
-import javafx.event.EventType;
 import lombok.NoArgsConstructor;
 
 import java.util.HashMap;
