@@ -64,7 +64,7 @@ public class LikeServiceImpl implements LikeService {
         List<String> matchLikeKey = jedisService.scan(LikeKey.LIKE_KEY.getPrefix() + "*");
         for(String s : matchLikeKey){
             // 这里从LikeKey:like是12位数，所以12位开始遍历文章ID
-            int articleId = Integer.valueOf(s.substring(12));
+            int articleId = Integer.parseInt(s.substring(12));
             Article article = articleService.selectArticleByArticleId(articleId);
             long likeCount = jedisService.scard(s);
             article.setArticleLikeCount((int) likeCount);

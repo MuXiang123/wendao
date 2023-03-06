@@ -22,7 +22,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(indexName = "wego", type = "_doc", createIndex = false)
+@Document(indexName = "wendao", type = "_doc", createIndex = true)
 public class Article {
 
     /**

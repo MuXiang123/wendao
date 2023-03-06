@@ -11,15 +11,25 @@ import com.example.wendao.service.UserService;
 import com.example.wendao.vo.ArticleUserVo;
 import com.google.common.collect.Lists;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author: zhk
@@ -36,6 +46,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired(required = false)
     private ElasticSearchMapper elasticSearchMapper;
+
+    @Autowired
+    ElasticsearchRestTemplate restTemplate;
 
     @Autowired
     UserService userService;
@@ -131,17 +144,32 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleUserVo> selectArticleByKeywords(String keywords) {
 
+//        // 但是使用这种方法，他的中文分词器不起作用，所以以后有时间来修复这个bug
+//        BoolQueryBuilder builder = QueryBuilders.boolQuery()
+//                // 从文章标题中查询
+//                .should(QueryBuilders.matchPhraseQuery("article_title", keywords))
+//                // 从文章内容中查询
+//                .should(QueryBuilders.matchPhraseQuery("article_content", keywords));
+//        //String queryResult = builder.toString();
+//        //logger.info(queryResult);
+//        Page<Article> search = (Page<Article>) elasticSearchMapper.search(builder);
+//        List<Article> articleList = search.getContent();
+//        return dealWithArticleVo(articleList);
 
-        // 但是使用这种方法，他的中文分词器不起作用，所以以后有时间来修复这个bug
-        BoolQueryBuilder builder = QueryBuilders.boolQuery()
-                // 从文章标题中查询
-                .should(QueryBuilders.matchPhraseQuery("article_title", keywords))
-                // 从文章内容中查询
-                .should(QueryBuilders.matchPhraseQuery("article_content", keywords));
-        //String queryResult = builder.toString();
-        //logger.info(queryResult);
-        Page<Article> search = (Page<Article>) elasticSearchMapper.search(builder);
-        List<Article> articleList = search.getContent();
+        Pageable pageable = PageRequest.of(0, 10);
+        NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
+                .withQuery(QueryBuilders.matchPhraseQuery("article_title", keywords))
+                .withQuery(QueryBuilders.matchPhraseQuery("article_content", keywords))
+                .withPageable(PageRequest.of(0, 9))
+                .build();
+        SearchHits<Article> search = restTemplate.search(nativeSearchQuery, Article.class);
+        logger.info("total:{}", search.getTotalHits());
+        Stream<SearchHit<Article>> searchHitStream = search.get();
+        List<Article> articleList = searchHitStream.map(SearchHit::getContent).collect(Collectors.toList());
+        logger.info("es搜索数量:{}",articleList.size());
+        articleList.forEach(item->{
+            logger.info(item.toString());
+        });
         return dealWithArticleVo(articleList);
     }
 
