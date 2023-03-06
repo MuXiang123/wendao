@@ -3,12 +3,13 @@
 <mapper namespace="com.example.wendao.mapper.CommentMapper">
 
     <insert id="insertComment">
-        insert into comment,
+        insert into comment(
             comment_article_id,
             comment_user_id,
             comment_content,
             comment_like_count,
-            comment_created_time
+            comment_count,
+            comment_created_time)
         values (#{commentArticleId},
             #{commentUserId},
             #{commentContent},

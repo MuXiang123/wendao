@@ -103,7 +103,7 @@ public class CommentController {
 
     @GetMapping("/comment/list")
     @ResponseBody
-    public Result<List<CommentUserVo>> commentArticleLists(int articleId) {
+    public Result<List<CommentUserVo>> commentArticleLists(Integer articleId) {
         List<CommentUserVo> commentUserVoList = commentService.selectCommentLists(articleId);
         return Result.success(commentUserVoList);
     }
