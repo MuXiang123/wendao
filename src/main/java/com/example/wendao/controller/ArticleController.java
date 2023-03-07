@@ -6,6 +6,7 @@ import com.example.wendao.entity.User;
 import com.example.wendao.redis.JedisService;
 import com.example.wendao.service.ArticleService;
 import com.example.wendao.service.CategoryService;
+import com.example.wendao.service.ElasticSearchService;
 import com.example.wendao.service.UserService;
 import com.example.wendao.utils.CodeMsg;
 import com.example.wendao.utils.Result;
@@ -33,6 +34,9 @@ public class ArticleController {
 
     @Autowired
     ArticleService articleService;
+
+    @Autowired
+    ElasticSearchService elasticSearchService;
 
     @Autowired
     JedisService jedisService;
@@ -73,6 +77,7 @@ public class ArticleController {
         userService.updateByUserId(publishUser);
         articleService.insertArticle(article);
 
+        elasticSearchService.saveArticle(article);
         return Result.success(true);
     }
 
@@ -97,6 +102,7 @@ public class ArticleController {
     @ResponseBody
     public Result<Boolean> editArticle(@RequestBody Article article) {
         articleService.updateArticle(article);
+        elasticSearchService.updateArticle(article);
         return Result.success(true);
     }
 
@@ -112,6 +118,7 @@ public class ArticleController {
         if (article.getArticleUserId().equals(user.getUserId())) {
             // 是发表文章的作者，才能有权操作删除文章
             articleService.deleteArticle(articleId);
+            elasticSearchService.deleteArticle(String.valueOf(articleId));
             return Result.success(true);
         } else {
             return Result.success(false);

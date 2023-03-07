@@ -7,6 +7,7 @@ import com.example.wendao.mapper.ElasticSearchMapper;
 import com.example.wendao.redis.JedisService;
 import com.example.wendao.redis.LikeKey;
 import com.example.wendao.service.ArticleService;
+import com.example.wendao.service.ElasticSearchService;
 import com.example.wendao.service.UserService;
 import com.example.wendao.vo.ArticleUserVo;
 import com.google.common.collect.Lists;
@@ -48,7 +49,7 @@ public class ArticleServiceImpl implements ArticleService {
     private ElasticSearchMapper elasticSearchMapper;
 
     @Autowired
-    ElasticsearchRestTemplate restTemplate;
+    ElasticSearchService elasticSearchService;
 
     @Autowired
     UserService userService;
@@ -143,33 +144,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleUserVo> selectArticleByKeywords(String keywords) {
-
-//        // 但是使用这种方法，他的中文分词器不起作用，所以以后有时间来修复这个bug
-//        BoolQueryBuilder builder = QueryBuilders.boolQuery()
-//                // 从文章标题中查询
-//                .should(QueryBuilders.matchPhraseQuery("article_title", keywords))
-//                // 从文章内容中查询
-//                .should(QueryBuilders.matchPhraseQuery("article_content", keywords));
-//        //String queryResult = builder.toString();
-//        //logger.info(queryResult);
-//        Page<Article> search = (Page<Article>) elasticSearchMapper.search(builder);
-//        List<Article> articleList = search.getContent();
-//        return dealWithArticleVo(articleList);
-
-        Pageable pageable = PageRequest.of(0, 10);
-        NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilders.matchPhraseQuery("article_title", keywords))
-                .withQuery(QueryBuilders.matchPhraseQuery("article_content", keywords))
-                .withPageable(PageRequest.of(0, 9))
-                .build();
-        SearchHits<Article> search = restTemplate.search(nativeSearchQuery, Article.class);
-        logger.info("total:{}", search.getTotalHits());
-        Stream<SearchHit<Article>> searchHitStream = search.get();
-        List<Article> articleList = searchHitStream.map(SearchHit::getContent).collect(Collectors.toList());
-        logger.info("es搜索数量:{}",articleList.size());
-        articleList.forEach(item->{
-            logger.info(item.toString());
-        });
+        List<Article> articleList = elasticSearchService.searchArticle(keywords);
         return dealWithArticleVo(articleList);
     }
 

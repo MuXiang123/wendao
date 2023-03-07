@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
+import javax.xml.bind.DataBindingException;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -61,17 +63,19 @@ public class LikeServiceImpl implements LikeService {
          */
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        List<String> matchLikeKey = jedisService.scan(LikeKey.LIKE_KEY.getPrefix() + "*");
+        List<String> matchLikeKey = jedisService.scan(LikeKey.LIKE_KEY.getPrefix() + "[0-9]*");
         for(String s : matchLikeKey){
             // 这里从LikeKey:like是12位数，所以12位开始遍历文章ID
             int articleId = Integer.parseInt(s.substring(12));
             Article article = articleService.selectArticleByArticleId(articleId);
             long likeCount = jedisService.scard(s);
-            article.setArticleLikeCount((int) likeCount);
-            articleService.updateArticle(article);
+            if (article != null){
+                article.setArticleLikeCount((int) likeCount);
+                articleService.updateArticle(article);
+            }
         }
         stopWatch.stop();
-        log.info("每隔两小时将Redis的点赞数量更新至DB中,耗时{}ms", stopWatch.getTotalTimeMillis());
+        log.info("{}: 将缓存中的点赞数量落库,耗时{}ms",new Date(), stopWatch.getTotalTimeMillis());
 
 
     }

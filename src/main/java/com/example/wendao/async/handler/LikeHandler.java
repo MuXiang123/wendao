@@ -50,7 +50,7 @@ public class LikeHandler implements EventHandler {
         // 发表该篇文章的作者
         String toId = eventModel.getEntityOwnerId();
         // 这里要通过用户的Id来关联文章，来获取到用户发表的文章，获取文章的标题信息
-        int articleId = Integer.valueOf(eventModel.getExts("articleId"));
+        int articleId = Integer.parseInt(eventModel.getExts("articleId"));
         logger.info(toId);
         logger.info(String.valueOf(articleId));
         //获取文章信息

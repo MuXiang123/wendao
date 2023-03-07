@@ -63,13 +63,11 @@ public class LikeController {
         Article article = articleService.selectArticleByUserId(articleInt);
         String articleAuthor = article.getArticleUserId();
         EventModel eventModel = new EventModel();
-        // 点完赞之后，理解异步通知给用户
+        // 点完赞之后，立即异步通知给用户
         eventProducer.fireEvent(eventModel.setEventType(EventType.LIKE).setActorId(user.getUserId())
                 .setEntityType(1).setEntityId(2).setEntityOwnerId(articleAuthor).setExts("articleId", articleId + ""));
-        // 点完站之后，articleCount的数据也会对应进行增加，这里使用Quartz设置每多长时间将redis中的数据
+        // 点赞之后，articleCount的数据也会对应进行增加，这里使用Quartz设置每多长时间将redis中的数据
         // 更新到mysql中，在优化阶段每隔一小时将redis中存的点赞数量更新到数据库中去
-        // article.setArticleLikeCount(article.getArticleLikeCount() + 1);
-
         // 首先根据文章的id, 查找出这篇文章的发布者，然后通过文章发布者的id查找出user对象，然后更新其成就值
         User publishUser = userService.selectByUserId(articleAuthor);
         publishUser.setAchieveValue(publishUser.getAchieveValue() + 5);

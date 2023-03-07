@@ -35,7 +35,7 @@ public class QuartzConfig {private static final String LIKE_TASK_QUARTZ = "LIKE_
     public Trigger quartzTrigger() {
         // 目前这里配置的是10s更新一次 现在更新为每2个小时更新下程序
         SimpleScheduleBuilder scheduleBuilder = SimpleScheduleBuilder.simpleSchedule()
-                //.withIntervalInSeconds(30)
+//                .withIntervalInSeconds(10)
                 .withIntervalInHours(2)
                 .repeatForever();
         return TriggerBuilder.newTrigger().forJob(quartzDetail())

@@ -67,7 +67,6 @@ public class EventConsumer implements InitializingBean, ApplicationContextAware 
         // 将需要处理的类型和那个类来处理都装进map了，另启动一个线程来监听该行为
         new Thread(() -> {
             while (true) {
-
                 List<String> strs = jedisService.brpop(LikeKey.LIKE_ASYNC_KEY, CommonKey.EVENT_LIKE_QUEUE);
                 logger.info("即将处理的EventModel为{}", strs);
                 for (String str : strs) {
