@@ -98,16 +98,18 @@ public interface ArticleService {
 
     /**
      * 查询所有用户发布的文章
+     * @param pageNum
+     * @param pageSize
      * @return
      */
-    List<ArticleUserVo> selectAllArticleIndexViewData();
+    List<ArticleUserVo> selectAllArticleIndexViewData(Integer pageNum, Integer pageSize);
 
     /**
      * 查询所有目录下的文章
      * @param categoryId
      * @return
      */
-    List<ArticleUserVo> selectAllArticleCategoryData(int categoryId);
+    List<ArticleUserVo> selectAllArticleCategoryData(Integer categoryId, Integer pageNum, Integer pageSize);
 
     /**
      * 查询文章详情

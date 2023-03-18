@@ -65,7 +65,7 @@ public class UserController {
     public Result<String> uploadImages(MultipartFile file) {
         if (file != null) {
             if (file.getSize() > 1024 * 1024 * 4) {
-                return new Result<>("文件大小不能大于M");
+                return new Result<>("文件大小不能大于4M");
             }
             String suffix = file.getOriginalFilename().
                     substring(file.getOriginalFilename().lastIndexOf(".") + 1,

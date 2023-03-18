@@ -23,20 +23,20 @@
         </dependency>
 
         <!--添加servlet-api依赖-->
-<!--        <dependency>-->
-<!--            <groupId>javax.servlet</groupId>-->
-<!--            <artifactId>javax.servlet-api</artifactId>-->
-<!--            <version>3.1.0</version>-->
-<!--            &lt;!&ndash;tomcat发布时取消注释&ndash;&gt;-->
-<!--            <scope>provided</scope>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>javax.servlet</groupId>-->
+        <!--            <artifactId>javax.servlet-api</artifactId>-->
+        <!--            <version>3.1.0</version>-->
+        <!--            &lt;!&ndash;tomcat发布时取消注释&ndash;&gt;-->
+        <!--            <scope>provided</scope>-->
+        <!--        </dependency>-->
 
 
-<!--        <dependency>-->
-<!--            <groupId>org.apache.tomcat</groupId>-->
-<!--            <artifactId>tomcat-juli</artifactId>-->
-<!--            <version>${tomcat.version}</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.tomcat</groupId>-->
+        <!--            <artifactId>tomcat-juli</artifactId>-->
+        <!--            <version>${tomcat.version}</version>-->
+        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -48,7 +48,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.10</version>
+        </dependency>
         <dependency>
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>

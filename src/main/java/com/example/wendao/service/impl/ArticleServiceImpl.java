@@ -127,13 +127,13 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleUserVo> selectAllArticleIndexViewData() {
-        return articleMapper.selectAllArticleIndexViewData();
+    public List<ArticleUserVo> selectAllArticleIndexViewData(Integer pageNum, Integer pageSize) {
+        return articleMapper.selectAllArticleIndexViewData(pageNum, pageSize);
     }
 
     @Override
-    public List<ArticleUserVo> selectAllArticleCategoryData(int categoryId) {
-        return articleMapper.selectAllArtilceCategoryData(categoryId);
+    public List<ArticleUserVo> selectAllArticleCategoryData(Integer categoryId, Integer pageNum, Integer pageSize) {
+        return articleMapper.selectAllArtilceCategoryData(categoryId, pageNum, pageSize);
     }
 
 

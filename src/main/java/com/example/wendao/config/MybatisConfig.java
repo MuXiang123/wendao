@@ -1,6 +1,7 @@
 package com.example.wendao.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.github.pagehelper.PageHelper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * @author: zhk
@@ -18,7 +20,7 @@ import javax.sql.DataSource;
  * @version: 1.0
  */
 @Configuration
-@MapperScan({ "com.example.wendao.mapper"})
+@MapperScan({"com.example.wendao.mapper"})
 @EnableTransactionManagement
 public class MybatisConfig {
 

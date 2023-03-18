@@ -6,13 +6,11 @@ import com.example.wendao.redis.LikeKey;
 import com.example.wendao.service.ArticleService;
 import com.example.wendao.utils.Result;
 import com.example.wendao.vo.ArticleUserVo;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,11 +32,15 @@ public class IndexController {
 
     /**
      * 首页
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
      */
     @GetMapping("/")
     @ResponseBody
-    public Result<List<ArticleUserVo>> index() {
-        List<ArticleUserVo> articleList = articleService.selectAllArticleIndexViewData();
+    public Result<List<ArticleUserVo>> index(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+        List<ArticleUserVo> articleList = articleService.selectAllArticleIndexViewData(pageNum, pageSize);
         return Result.success(articleList);
     }
 
@@ -68,10 +70,19 @@ public class IndexController {
         return Result.success(articleUserVo);
     }
 
+    /**
+     * 根据目录id查询文章
+     * @param categoryId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/category/{categoryId}")
     @ResponseBody
-    public Result<List<ArticleUserVo>> articleCategory(@PathVariable("categoryId") int categoryId) {
-        List<ArticleUserVo> articleList = articleService.selectAllArticleCategoryData(categoryId);
+    public Result<List<ArticleUserVo>> articleCategory(@PathVariable("categoryId") Integer categoryId,
+                                                       @RequestParam("pageNum") Integer pageNum,
+                                                       @RequestParam("pageSize")Integer pageSize) {
+        List<ArticleUserVo> articleList = articleService.selectAllArticleCategoryData(categoryId, pageNum, pageSize);
         return Result.success(articleList);
     }
 }
