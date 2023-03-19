@@ -50,6 +50,8 @@ public class Comment {
      * 评论创建时间
      */
     private Date commentCreatedTime;
-
-
+    /**
+     * 父评论id
+     */
+    private int parentCommentId;
 }

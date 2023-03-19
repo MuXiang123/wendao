@@ -3,20 +3,28 @@
 <mapper namespace="com.example.wendao.mapper.CommentMapper">
 
     <insert id="insertComment">
-        insert into comment(
-            comment_article_id,
-            comment_user_id,
-            comment_content,
-            comment_like_count,
-            comment_count,
-            comment_created_time)
+        insert into comment(comment_article_id,
+                            comment_user_id,
+                            comment_content,
+                            comment_like_count,
+                            comment_count,
+                            comment_created_time,
+                            parent_comment_id)
         values (#{commentArticleId},
-            #{commentUserId},
-            #{commentContent},
-            #{commentLikeCount},
-            #{commentCount},
-            #{commentCreatedTime})
+                #{commentUserId},
+                #{commentContent},
+                #{commentLikeCount},
+                #{commentCount},
+                #{commentCreatedTime},
+                #{parentCommentId})
     </insert>
+
+    <update id="updateCommentCount">
+        update comment
+        set comment_count = #{commentCount}
+        where comment_id = #{commentId}
+    </update>
+
     <delete id="deleteComment">
         delete
         from comment
@@ -30,7 +38,8 @@
                comment_content,
                comment_like_count,
                comment_count,
-               comment_created_time
+               comment_created_time,
+               parent_comment_id
         from comment
         where comment_id = #{commentId}
     </select>
@@ -41,7 +50,8 @@
                comment_content,
                comment_like_count,
                comment_count,
-               comment_created_time
+               comment_created_time,
+               parent_comment_id
         from comment
         where comment_article_id = #{commentArticleId}
         order by comment_created_time desc
@@ -58,4 +68,30 @@
           and user_id = comment_user_id
         order by comment_created_time desc
     </select>
+    <select id="selectParentComment" resultMap="topComment">
+        select comment.*, user.avatar, user.nickname
+        from comment
+                 inner join user
+        where comment_article_id = #{commentArticleId}
+          and user_id = comment_user_id
+            and parent_comment_id = #{parentId}
+        order by comment_created_time desc
+    </select>
+    <resultMap id="baseTopComment" type="com.example.wendao.vo.CommentUserVo">
+        <id property="commentId" column="comment_id"></id>
+        <result property="commentContent" column="comment_content"/>
+        <result property="commentArticleId" column="comment_article_id"/>
+        <result property="parentCommentId" column="parent_comment_id"/>
+        <result property="commentUserId" column="comment_user_id"/>
+        <result property="commentLikeCount" column="comment_like_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="commentCreatedTime" column="comment_created_time"/>
+        <result property="avatar" column="avatar"/>
+        <result property="nickname" column="nickname"/>
+    </resultMap>
+    <resultMap id="topComment" type="com.example.wendao.vo.CommentUserVo" extends="baseTopComment">
+        <collection property="replyCommentList" ofType="com.example.wendao.vo.CommentUserVo"
+                    select="selectParentComment" column="{commentArticleId=comment_article_id,parentId=comment_id}">
+        </collection>
+    </resultMap>
 </mapper>

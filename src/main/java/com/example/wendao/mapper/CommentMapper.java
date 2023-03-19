@@ -47,10 +47,24 @@ public interface CommentMapper {
 
 
     /**
-     * 查询评论的回复列表
+     * 查询文章下的评论列表
      * @param commentArticleId
      * @return
      */
     List<CommentUserVo> selectCommentLists(int commentArticleId);
 
+    /**
+     * 更新评论数
+     * @param commentId
+     * @param commentCount
+     */
+    void updateCommentCount(int commentId, int commentCount);
+
+    /**
+     * 查询根评论
+     * @param commentArticleId
+     * @param parentId
+     * @return
+     */
+    List<CommentUserVo> selectParentComment(int commentArticleId, int parentId);
 }

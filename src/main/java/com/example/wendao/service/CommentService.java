@@ -51,4 +51,10 @@ public interface CommentService {
      * @return
      */
     List<CommentUserVo> selectCommentLists(int articleCommentId);
+
+    /**
+     * 增加子评论数
+     * @param commentId
+     */
+    void updateCommentCount(int commentId);
 }
