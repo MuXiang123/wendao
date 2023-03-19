@@ -8,6 +8,7 @@ import com.example.wendao.redis.VerifyCodeKey;
 import com.example.wendao.service.UserService;
 import com.example.wendao.utils.GenerateRandomCode;
 import com.example.wendao.utils.Result;
+import com.example.wendao.vo.UserInfoVo;
 import com.mchange.io.FileUtils;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.model.PutObjectRequest;
@@ -57,6 +58,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User selectByUserId(String userId) {
         return userMapper.selectByUserId(userId);
+    }
+
+    @Override
+    public UserInfoVo selectByUserInfoId(String userId) {
+        return userMapper.selectByUserInfoId(userId);
     }
 
     @Override

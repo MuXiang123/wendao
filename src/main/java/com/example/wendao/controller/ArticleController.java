@@ -101,6 +101,10 @@ public class ArticleController {
     @PostMapping("/edit")
     @ResponseBody
     public Result<Boolean> editArticle(@RequestBody Article article) {
+        article.setUpdateTime(new Date());
+        Category category = categoryService.selectCategoryByName(article.getArticleCategoryName());
+        log.info("category对象为：{}", category.toString());
+        article.setArticleCategoryId(category.getCategoryId());
         articleService.updateArticle(article);
         elasticSearchService.updateArticle(article);
         return Result.success(true);

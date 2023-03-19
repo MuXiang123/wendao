@@ -1,6 +1,7 @@
 package com.example.wendao.mapper;
 
 import com.example.wendao.entity.User;
+import com.example.wendao.vo.UserInfoVo;
 
 import java.util.List;
 
@@ -25,6 +26,12 @@ public interface UserMapper {
      */
     User selectByUserId(String userId);
 
+    /**
+     * 根据id查询userinfo
+     * @param userId
+     * @return
+     */
+    UserInfoVo selectByUserInfoId(String userId);
     /**
      * 更新用户信息
      *

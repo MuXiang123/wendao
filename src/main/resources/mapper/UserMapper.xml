@@ -17,8 +17,6 @@
     <select id="selectByUserId" resultType="com.example.wendao.entity.User">
         SELECT user_id,
                nickname,
-               password,
-               salt,
                avatar,
                achieve_value,
                school,
@@ -47,6 +45,19 @@
         from user
         order by achieve_value
                 desc limit 0, 10
+    </select>
+    <select id="selectByUserInfoId" resultType="com.example.wendao.vo.UserInfoVo">
+        select user_id,
+               nickname,
+               avatar,
+               achieve_value,
+               school,
+               login_ip,
+               create_time,
+               sex,
+               signature
+        FROM user
+        WHERE user_id = #{userId}
     </select>
 
     <update id="updateByUserId" >

@@ -1,6 +1,7 @@
 package com.example.wendao.controller;
 
 
+import com.example.wendao.dto.RegisterDto;
 import com.example.wendao.dto.UserDto;
 import com.example.wendao.entity.User;
 import com.example.wendao.redis.JedisService;
@@ -8,15 +9,18 @@ import com.example.wendao.redis.JedisService;
 import com.example.wendao.service.UserService;
 import com.example.wendao.utils.CodeMsg;
 
+import com.example.wendao.utils.IpUtils;
 import com.example.wendao.utils.RandomUtils;
 import com.example.wendao.utils.Result;
 
+import com.example.wendao.vo.UserInfoVo;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -38,18 +42,13 @@ public class RegisterController {
 
     /**
      * 注册
-     * @param userDto
+     * @param registerDto
      * @return
      */
     @PostMapping ("/verifyRegisterInfo")
-    public Result<CodeMsg> registerVerify(@RequestBody UserDto userDto) {
-//        String verifyCode = jedisService.getKey(VerifyCodeKey.verifyCodeKeyRegister, code, String.class);
-//        if (verifyCode == null) {
-//            return Result.error(CodeMsg.VERIFY_CODE_ERROR);
-//        }
-
+    public Result<CodeMsg> registerVerify(@RequestBody RegisterDto registerDto, HttpServletRequest request) {
         // 判断该手机号是否注册过了
-        User u = userService.selectByUserId(userDto.getUserId());
+        UserInfoVo u = userService.selectByUserInfoId(registerDto.getUserId());
         if (u != null) {
             return Result.error(CodeMsg.DUPLICATE_REGISTRY);
         }
@@ -58,11 +57,11 @@ public class RegisterController {
         String nickname = "用户" + RandomUtils.randomNickName() + "号";
 
         User user = new User();
-        user.setUserId(userDto.getUserId());
+        user.setUserId(registerDto.getUserId());
         user.setSalt(salt);
-        user.setPassword(DigestUtils.md5Hex((userDto.getPassword() + salt)));
-        user.setNickname(nickname);
-        user.setLoginIp("phone");
+        user.setPassword(DigestUtils.md5Hex((registerDto.getPassword() + salt)));
+        user.setNickname(registerDto.getNickName());
+        user.setLoginIp(IpUtils.getIpAddr(request));
         user.setCreateTime(new Date());
         userService.insert(user);
         return Result.success(CodeMsg.SUCCESS);

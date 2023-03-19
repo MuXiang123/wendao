@@ -4,6 +4,7 @@ import com.example.wendao.entity.User;
 import com.example.wendao.service.UserService;
 import com.example.wendao.utils.CodeMsg;
 import com.example.wendao.utils.Result;
+import com.example.wendao.vo.UserInfoVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;;
@@ -36,10 +37,10 @@ public class UserController {
      */
     @GetMapping("/userInfo")
     @ResponseBody
-    public Result<User> userInfo(HttpServletRequest request) {
+    public Result<UserInfoVo> userInfo(HttpServletRequest request) {
         User user = loginController.getUserInfo(request);
         String userId = user.getUserId();
-        return Result.success(userService.selectByUserId(userId));
+        return Result.success(userService.selectByUserInfoId(userId));
     }
 
 

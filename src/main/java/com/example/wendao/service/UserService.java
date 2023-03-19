@@ -1,6 +1,7 @@
 package com.example.wendao.service;
 
 import com.example.wendao.entity.User;
+import com.example.wendao.vo.UserInfoVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -19,11 +20,18 @@ public interface UserService {
     void insert(User user);
 
     /**
-     * 通过id获取用户信息
+     * 通过id获取全部用户信息
      * @param userId
      * @return
      */
     User selectByUserId(String userId);
+
+    /**
+     * 查询用户部分信息
+     * @param userId
+     * @return
+     */
+    UserInfoVo selectByUserInfoId(String userId);
 
     /**
      * 更新用户信息
