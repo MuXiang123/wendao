@@ -56,4 +56,11 @@ public interface UserService {
      * @return
      */
     String uploadImages(MultipartFile multipartFile);
+
+    /**
+     * 查询用户所有信息
+     * @param userId
+     * @return
+     */
+    User selectByUserIdAll(String userId);
 }

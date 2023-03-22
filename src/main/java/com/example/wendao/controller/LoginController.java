@@ -70,10 +70,13 @@ public class LoginController {
      */
     @PostMapping("/loginPassword")
     public Result<CodeMsg> loginPassword(@RequestBody UserDto userDto, HttpServletResponse response) {
-        User user = userService.selectByUserId(userDto.getUserId());
+        User user = userService.selectByUserIdAll(userDto.getUserId());
         if (user == null) {
             return Result.error(CodeMsg.UNREGISTER_PHONE);
         }
+
+        System.out.println(userDto.getPassword());
+        System.out.println(user.getSalt());
 
         if (!(user.getPassword().equals(DigestUtils.md5Hex(userDto.getPassword() + user.getSalt())))) {
             return Result.error(CodeMsg.PASSWORD_ERROR);

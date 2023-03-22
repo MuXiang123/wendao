@@ -50,4 +50,11 @@ public interface UserMapper {
      * @return
      */
     List<User> top10LeaderBoard();
+
+    /**
+     * 查询用户所有信息
+     * @param userId
+     * @return
+     */
+    User selectByUserIdAll(String userId);
 }

@@ -119,4 +119,9 @@ public class UserServiceImpl implements UserService {
             return "";
         }
     }
+
+    @Override
+    public User selectByUserIdAll(String userId) {
+        return userMapper.selectByUserIdAll(userId);
+    }
 }
