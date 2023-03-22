@@ -53,4 +53,9 @@ public class VideoController {
 
     }
 
+    @GetMapping("/recommend")
+    public Result recommend(@RequestParam String bvid){
+        JSONArray array = videoService.recommend(bvid);
+        return new Result(array);
+    }
 }

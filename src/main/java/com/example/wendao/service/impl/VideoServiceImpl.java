@@ -33,6 +33,7 @@ import java.util.Map;
 public class VideoServiceImpl implements VideoService {
     private final static String VIDEO_CATEGORY_FEED = "https://api.bilibili.com/x/web-interface/dynamic/region";
     private final static String VIDEO_ACTION = "https://api.bilibili.com/x/player/playurl";
+    private final static String RECOMMEND = "https://api.bilibili.com/x/web-interface/archive/related";
     private final static String ENCODE = "UTF-8";
 
     @Value("${cookie}")
@@ -125,6 +126,47 @@ public class VideoServiceImpl implements VideoService {
         data.remove("high_format");
         data.remove("last_play_time");
         data.remove("last_play_cid");
+        return data;
+    }
+
+    @Override
+    public JSONArray recommend(String bvid) {
+        RestTemplate restTemplate = new RestTemplate();
+        // 设置Cookie
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Cookie", COOKIE);
+        // 设置参数
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(RECOMMEND)
+                .queryParam("bvid", bvid);
+        // 发送GET请求并获取响应
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+        ResponseEntity<String> response = restTemplate.exchange(builder.build().toUri(), HttpMethod.GET, entity, String.class);
+        String resp = response.getBody();
+        JSONObject jsonObject = JSONObject.parseObject(resp);
+        JSONArray data = jsonObject.getJSONArray("data");
+        if (data == null) {
+            List<Object> list = new ArrayList<>();
+            list.add("请求错误");
+            return new JSONArray(list);
+        }
+        for (Object o : data) {
+            JSONObject jsonObject1 = (JSONObject) o;
+            String bvid1 = jsonObject1.getString("bvid");
+            int avid = BvToAvUtils.bvidToAid(bvid1);
+            log.info("bvid:{}\tavid:{}", bvid1, avid);
+            //清除json中无用的信息
+            jsonObject1.remove("state");
+            jsonObject1.remove("duration");
+            jsonObject1.remove("mission_id");
+            jsonObject1.remove("rights");
+            jsonObject1.remove("dynamic");
+            jsonObject1.remove("short_link");
+            jsonObject1.remove("short_link_v2");
+            jsonObject1.remove("season_type");
+            jsonObject1.remove("is_ogv");
+            jsonObject1.remove("ogv_info");
+            jsonObject1.remove("rcmd_reason");
+        }
         return data;
     }
 

@@ -17,6 +17,7 @@ import java.util.List;
 public interface VideoService {
     /**
      * 目录列表
+     *
      * @param pageNum
      * @param pageSize
      * @return
@@ -25,6 +26,7 @@ public interface VideoService {
 
     /**
      * 获取分类下的视频推荐
+     *
      * @param pageNum
      * @param pageSize
      * @param tid
@@ -34,8 +36,17 @@ public interface VideoService {
 
     /**
      * 获取视频播放信息
+     *
      * @param videoActionDto
      * @return
      */
     JSONObject action(VideoActionDto videoActionDto);
+
+    /**
+     * 获取某个视频下面的推荐视频
+     *
+     * @param bvid
+     * @return
+     */
+    JSONArray recommend(String bvid);
 }
