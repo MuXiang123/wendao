@@ -1,7 +1,9 @@
 package com.example.wendao.controller;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.wendao.dto.CategoryFeedDto;
+import com.example.wendao.dto.VideoActionDto;
 import com.example.wendao.entity.VideoCategory;
 import com.example.wendao.service.CategoryService;
 import com.example.wendao.service.VideoService;
@@ -39,7 +41,16 @@ public class VideoController {
      * @return
      */
     @PostMapping("/category/feed")
-    public JSONArray categoryFeedList(@RequestBody CategoryFeedDto categoryFeedDto){
-        return videoService.categoryFeedList(categoryFeedDto.getPageNum(), categoryFeedDto.getPageSize(), categoryFeedDto.getTid());
+    public Result categoryFeedList(@RequestBody CategoryFeedDto categoryFeedDto){
+        JSONArray objects = videoService.categoryFeedList(categoryFeedDto.getPageNum(), categoryFeedDto.getPageSize(), categoryFeedDto.getTid());
+        return new Result<>(objects);
     }
+
+    @PostMapping("/action")
+    public Result action(@RequestBody VideoActionDto videoActionDto){
+        JSONObject action = videoService.action(videoActionDto);
+        return new Result<>(action);
+
+    }
+
 }

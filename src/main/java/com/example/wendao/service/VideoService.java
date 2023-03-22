@@ -2,6 +2,7 @@ package com.example.wendao.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.wendao.dto.VideoActionDto;
 import com.example.wendao.entity.VideoCategory;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -30,4 +31,11 @@ public interface VideoService {
      * @return
      */
     JSONArray categoryFeedList(int pageNum, int pageSize, int tid);
+
+    /**
+     * 获取视频播放信息
+     * @param videoActionDto
+     * @return
+     */
+    JSONObject action(VideoActionDto videoActionDto);
 }
