@@ -25,6 +25,19 @@ public interface VideoService {
     List<VideoCategory> categoryList(int pageNum, int pageSize);
 
     /**
+     * 获取主分区
+     * @return
+     */
+    List<VideoCategory> categoryMainList();
+
+    /**
+     * 获取子分区
+     * @param parentId
+     * @return
+     */
+    List<VideoCategory> categoryChildList(int parentId);
+
+    /**
      * 获取分类下的视频推荐
      *
      * @param pageNum
@@ -32,7 +45,15 @@ public interface VideoService {
      * @param tid
      * @return
      */
-    JSONArray categoryFeedList(int pageNum, int pageSize, int tid);
+    JSONObject categoryFeedList(int pageNum, int pageSize, int tid);
+
+    /**
+     * 获取热门推荐
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    JSONObject popular(int pageNum, int pageSize);
 
     /**
      * 获取视频播放信息
@@ -49,4 +70,11 @@ public interface VideoService {
      * @return
      */
     JSONArray recommend(String bvid);
+
+    /**
+     * 视频信息
+     * @param aid
+     * @return
+     */
+    JSONObject videoInformation(Integer aid);
 }

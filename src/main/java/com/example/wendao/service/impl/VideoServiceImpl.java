@@ -34,6 +34,10 @@ public class VideoServiceImpl implements VideoService {
     private final static String VIDEO_CATEGORY_FEED = "https://api.bilibili.com/x/web-interface/dynamic/region";
     private final static String VIDEO_ACTION = "https://api.bilibili.com/x/player/playurl";
     private final static String RECOMMEND = "https://api.bilibili.com/x/web-interface/archive/related";
+
+    private final static String POPULAR = "https://api.bilibili.com/x/web-interface/popular";
+    private final static String INFORMATION = "https://api.bilibili.com/x/web-interface/view";
+
     private final static String ENCODE = "UTF-8";
 
     @Value("${cookie}")
@@ -47,7 +51,19 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public JSONArray categoryFeedList(int pageNum, int pageSize, int rid) {
+    public List<VideoCategory> categoryMainList() {
+        return videoMapper.selectCategoryMainList();
+    }
+
+    @Override
+    public List<VideoCategory> categoryChildList(int parentId) {
+        return videoMapper.selectCategoryChild(parentId);
+    }
+
+
+
+    @Override
+    public JSONObject categoryFeedList(int pageNum, int pageSize, int rid) {
         RestTemplate restTemplate = new RestTemplate();
         // 设置Cookie
         HttpHeaders headers = new HttpHeaders();
@@ -64,9 +80,9 @@ public class VideoServiceImpl implements VideoService {
         JSONObject jsonObject = JSONObject.parseObject(resp);
         JSONObject data = jsonObject.getJSONObject("data");
         if (data == null) {
-            List<Object> list = new ArrayList<>();
-            list.add("请求错误");
-            return new JSONArray(list);
+            Map<String,Object> map = new HashMap<>();
+            map.put("msg", "请求错误");
+            return new JSONObject(map);
         }
         JSONArray archives = data.getJSONArray("archives");
         for (Object o : archives) {
@@ -87,7 +103,50 @@ public class VideoServiceImpl implements VideoService {
             jsonObject1.remove("ogv_info");
             jsonObject1.remove("rcmd_reason");
         }
-        return archives;
+        return data;
+    }
+
+    @Override
+    public JSONObject popular(int pageNum, int pageSize) {
+        RestTemplate restTemplate = new RestTemplate();
+        // 设置Cookie
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Cookie", COOKIE);
+        // 设置参数
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(POPULAR)
+                .queryParam("pn", pageNum)
+                .queryParam("ps", pageSize);
+        // 发送GET请求并获取响应
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+        ResponseEntity<String> response = restTemplate.exchange(builder.build().toUri(), HttpMethod.GET, entity, String.class);
+        String resp = response.getBody();
+        JSONObject jsonObject = JSONObject.parseObject(resp);
+        JSONObject data = jsonObject.getJSONObject("data");
+        if (data == null) {
+            Map<String,Object> map = new HashMap<>();
+            map.put("msg", "请求错误");
+            return new JSONObject(map);
+        }
+        JSONArray archives = data.getJSONArray("list");
+        for (Object o : archives) {
+            JSONObject jsonObject1 = (JSONObject) o;
+            String bvid = jsonObject1.getString("bvid");
+            int avid = BvToAvUtils.bvidToAid(bvid);
+            log.info("bvid:{}\tavid:{}", bvid, avid);
+            //清除json中无用的信息
+            jsonObject1.remove("state");
+            jsonObject1.remove("duration");
+            jsonObject1.remove("mission_id");
+            jsonObject1.remove("rights");
+            jsonObject1.remove("dynamic");
+            jsonObject1.remove("short_link");
+            jsonObject1.remove("short_link_v2");
+            jsonObject1.remove("season_type");
+            jsonObject1.remove("is_ogv");
+            jsonObject1.remove("ogv_info");
+            jsonObject1.remove("rcmd_reason");
+        }
+        return data;
     }
 
     @Override
@@ -166,6 +225,30 @@ public class VideoServiceImpl implements VideoService {
             jsonObject1.remove("is_ogv");
             jsonObject1.remove("ogv_info");
             jsonObject1.remove("rcmd_reason");
+        }
+        return data;
+    }
+
+    @Override
+    public JSONObject videoInformation(Integer aid) {
+        RestTemplate restTemplate = new RestTemplate();
+        // 设置Cookie
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Cookie", COOKIE);
+        // 设置参数
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(INFORMATION)
+                .queryParam("aid", aid);
+        // 发送GET请求并获取响应
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+        ResponseEntity<String> response = restTemplate.exchange(builder.build().toUri(), HttpMethod.GET, entity, String.class);
+        String resp = response.getBody();
+        JSONObject jsonObject = JSONObject.parseObject(resp);
+        JSONObject data = jsonObject.getJSONObject("data");
+        if(jsonObject.getIntValue("code") != 0){
+            Map<String, Object> msg = new HashMap<>();
+            msg.put("code", jsonObject.getIntValue("code"));
+            msg.put("msg", jsonObject.getString("message"));
+            return new JSONObject(msg);
         }
         return data;
     }

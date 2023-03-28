@@ -4,4 +4,10 @@
     <select id="selectCategoryList" resultType="com.example.wendao.entity.VideoCategory">
         select * from video_category
     </select>
+    <select id="selectCategoryMainList" resultType="com.example.wendao.entity.VideoCategory">
+        select * from video_category where parent_id = -1
+    </select>
+    <select id="selectCategoryChild" resultType="com.example.wendao.entity.VideoCategory">
+        select * from video_category where parent_id = #{parentId}
+    </select>
 </mapper>

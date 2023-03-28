@@ -19,4 +19,17 @@ public interface VideoMapper {
      * @return
      */
     List<VideoCategory> selectCategoryList(@Param("pageNum") int pageNum, @Param("pageSize") int pageSize);
+
+    /**
+     * 获取主分区
+     * @return
+     */
+    List<VideoCategory> selectCategoryMainList();
+
+    /**
+     * 根据父id查询子id
+     * @param parentId
+     * @return
+     */
+    List<VideoCategory> selectCategoryChild(@Param("parentId") int parentId);
 }

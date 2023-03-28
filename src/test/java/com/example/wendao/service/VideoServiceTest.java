@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author: zhk
  * @description:
@@ -113,8 +116,20 @@ public class VideoServiceTest {
 
     @Test
     void test2(){
-        JSONArray objects = videoService.categoryFeedList(1, 2, 95);
+        JSONObject objects = videoService.popular(1, 20);
         String s = objects.toJSONString();
         System.out.println(s);
+    }
+
+    @Test
+    public void testVideoInformation() {
+        Integer aid = 640081214;
+        JSONObject videoInfo = videoService.videoInformation(aid);
+        System.out.println(videoInfo.toJSONString());
+        assertNotNull(videoInfo);
+        assertTrue(videoInfo.containsKey("title"));
+        assertTrue(videoInfo.containsKey("description"));
+        assertTrue(videoInfo.containsKey("play"));
+        assertTrue(videoInfo.containsKey("pic"));
     }
 }

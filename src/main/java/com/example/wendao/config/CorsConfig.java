@@ -23,7 +23,6 @@ public class CorsConfig {
                         .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")
                         .allowedOrigins("*")
                         .allowedHeaders("*");
-
             }
         };
     }

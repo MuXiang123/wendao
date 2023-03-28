@@ -17,4 +17,5 @@ public class VideoCategory {
     private int tid;
     private String name;
     private String profile;
+    private String parentId;
 }
