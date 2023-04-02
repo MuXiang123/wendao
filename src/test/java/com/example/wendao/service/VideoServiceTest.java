@@ -116,7 +116,7 @@ public class VideoServiceTest {
 
     @Test
     void test2(){
-        JSONObject objects = videoService.popular(1, 20);
+        JSONArray objects = videoService.recommend(739152895);
         String s = objects.toJSONString();
         System.out.println(s);
     }

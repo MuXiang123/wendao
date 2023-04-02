@@ -66,10 +66,10 @@ public interface VideoService {
     /**
      * 获取某个视频下面的推荐视频
      *
-     * @param bvid
+     * @param aid
      * @return
      */
-    JSONArray recommend(String bvid);
+    JSONArray recommend(int aid);
 
     /**
      * 视频信息

@@ -189,14 +189,14 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
-    public JSONArray recommend(String bvid) {
+    public JSONArray recommend(int aid) {
         RestTemplate restTemplate = new RestTemplate();
         // 设置Cookie
         HttpHeaders headers = new HttpHeaders();
         headers.set("Cookie", COOKIE);
         // 设置参数
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(RECOMMEND)
-                .queryParam("bvid", bvid);
+                .queryParam("aid", aid);
         // 发送GET请求并获取响应
         HttpEntity<?> entity = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(builder.build().toUri(), HttpMethod.GET, entity, String.class);

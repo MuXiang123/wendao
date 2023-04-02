@@ -1,6 +1,8 @@
 package com.example.wendao.service;
 
 import com.example.wendao.entity.User;
+import com.example.wendao.utils.RandomUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -57,6 +59,19 @@ class UserServiceTest {
 
     @Test
     void updateByUserId() {
+        User user = new User();
+        user.setUserId("18420051370");
+        user.setNickname("zhk");
+        user.setPassword("123456");
+        user.setAvatar("default.png");
+        user.setAchieveValue(0);
+        user.setSchool("Tsinghua University");
+        user.setSex(1);
+        user.setSignature("Hello, world!");
+        String salt = RandomUtils.randomSalt();
+        user.setSalt(salt);
+        user.setPassword(DigestUtils.md5Hex((user.getPassword() + salt)));
+        userService.updateByUserId(user);
     }
 
     @Test

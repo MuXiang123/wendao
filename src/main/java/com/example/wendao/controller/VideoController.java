@@ -26,6 +26,12 @@ public class VideoController {
     @Autowired
     VideoService videoService;
 
+    /**
+     * 分页获取目录
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/category")
     public Result<List<VideoCategory>> categoryList(@RequestParam int pageNum, @RequestParam int pageSize){
         List<VideoCategory> videoCategories = videoService.categoryList(pageNum, pageSize);
@@ -74,24 +80,45 @@ public class VideoController {
         return new Result<>(objects);
     }
 
+    /**
+     * 视频播放地址
+     * @param videoActionDto
+     * @return
+     */
     @PostMapping("/action")
     public Result action(@RequestBody VideoActionDto videoActionDto){
         JSONObject action = videoService.action(videoActionDto);
         return new Result<>(action);
     }
 
+    /**
+     * 获取某个视频下面的推荐视频
+     * @param aid
+     * @return
+     */
     @GetMapping("/recommend")
-    public Result recommend(@RequestParam String bvid){
-        JSONArray array = videoService.recommend(bvid);
+    public Result recommend(@RequestParam int aid){
+        JSONArray array = videoService.recommend(aid);
         return new Result(array);
     }
 
+    /**
+     * 视频信息
+     * @param aid
+     * @return
+     */
     @GetMapping("/information")
     public Result videoDetail(@RequestParam Integer aid){
         JSONObject object = videoService.videoInformation(aid);
         return new Result(object);
     }
 
+    /**
+     * 热门推荐
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/popular")
     public Result popular(@RequestParam Integer pageNum, @RequestParam Integer pageSize){
         JSONObject object = videoService.popular(pageNum, pageSize);
