@@ -75,8 +75,8 @@ public class LoginController {
             return Result.error(CodeMsg.UNREGISTER_PHONE);
         }
 
-        System.out.println(userDto.getPassword());
-        System.out.println(user.getSalt());
+        log.info(userDto.getPassword());
+        log.info(user.getSalt());
 
         if (!(user.getPassword().equals(DigestUtils.md5Hex(userDto.getPassword() + user.getSalt())))) {
             return Result.error(CodeMsg.PASSWORD_ERROR);

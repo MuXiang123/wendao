@@ -54,7 +54,6 @@ public class RegisterController {
         }
         // 随机生成一个6位数的小写字符串
         String salt = RandomUtils.randomSalt();
-        String nickname = "用户" + RandomUtils.randomNickName() + "号";
 
         User user = new User();
         user.setUserId(registerDto.getUserId());

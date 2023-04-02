@@ -8,6 +8,7 @@ import com.example.wendao.redis.VerifyCodeKey;
 import com.example.wendao.service.UserService;
 import com.example.wendao.utils.GenerateRandomCode;
 import com.example.wendao.utils.Result;
+import com.example.wendao.vo.UserData;
 import com.example.wendao.vo.UserInfoVo;
 import com.mchange.io.FileUtils;
 import com.qcloud.cos.COSClient;
@@ -102,8 +103,6 @@ public class UserServiceImpl implements UserService {
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, localFile);
             PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
             log.info("putObjectResult" + putObjectResult.toString());
-            //关闭连接
-            cosClient.shutdown();
 
             //设置过期时间
             Date expiration = new Date(System.currentTimeMillis() + 5 * 60 * 10000);
@@ -123,5 +122,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public User selectByUserIdAll(String userId) {
         return userMapper.selectByUserIdAll(userId);
+    }
+
+    @Override
+    public UserData getUserData(String userId) {
+        return userMapper.getUserData(userId);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.wendao.service;
 
 import com.example.wendao.entity.User;
+import com.example.wendao.vo.UserData;
 import com.example.wendao.vo.UserInfoVo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -63,4 +64,11 @@ public interface UserService {
      * @return
      */
     User selectByUserIdAll(String userId);
+
+    /**
+     * 获取粉丝、点赞、关注数
+     * @param userId
+     * @return
+     */
+    UserData getUserData(String userId);
 }

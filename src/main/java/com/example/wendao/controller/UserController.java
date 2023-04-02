@@ -2,9 +2,12 @@ package com.example.wendao.controller;
 
 import com.example.wendao.entity.User;
 import com.example.wendao.service.UserService;
-import com.example.wendao.utils.CodeMsg;
+import com.example.wendao.utils.IpUtils;
+import com.example.wendao.utils.RandomUtils;
 import com.example.wendao.utils.Result;
+import com.example.wendao.vo.UserData;
 import com.example.wendao.vo.UserInfoVo;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;;
@@ -43,6 +46,11 @@ public class UserController {
         return Result.success(userService.selectByUserInfoId(userId));
     }
 
+    @GetMapping("/userData")
+    public Result<UserData> userData(@RequestParam String userId){
+        UserData userData = userService.getUserData(userId);
+        return Result.success(userData);
+    }
 
     @PostMapping("/update/userInfo")
     @ResponseBody
@@ -50,8 +58,11 @@ public class UserController {
         // 更新之前，需要将从前端传过来的图片信息，上传到腾讯云上去，然后存入数据库的话是一个链接
         // 需要更新的是用户昵称，用户头像，用户性别，用户学校，用户的个性签名
         // 重新设置Cookie，即更新Redis中User的信息
-        loginController.addCookie(response, user);
+        String salt = RandomUtils.randomSalt();
+        user.setSalt(salt);
+        user.setPassword(DigestUtils.md5Hex((user.getPassword() + salt)));
         userService.updateByUserId(user);
+        loginController.addCookie(response, user);
         return Result.success(true);
     }
 
@@ -85,4 +96,6 @@ public class UserController {
         }
 
     }
+
+
 }
