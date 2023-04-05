@@ -46,7 +46,6 @@ public class LikeController {
     @Autowired
     UserService userService;
 
-
     @GetMapping("/like")
     @ResponseBody
     public Result<Long> likeArticle(HttpServletRequest request, String articleId) {
@@ -54,11 +53,9 @@ public class LikeController {
         if (user == null) {
             return Result.error(CodeMsg.ERROR);
         }
-        // User user = userService.selectByUserId("17643537768");
-        // 进入这里说明用户是登录过了，然后把用户的相关信息存储到Redis的Set中
-        String real = LikeKey.LIKE_KEY.getPrefix() + articleId;
+        // User user = userService.selectByUserId("17643537768")
         // 这里的值，应该是userId，因为使用userId可以防止用户重复点赞
-        long likeCount = likeService.like(real, user.getUserId());
+        long likeCount = likeService.like(articleId, user.getUserId());
         Integer articleInt = Integer.parseInt(articleId);
         Article article = articleService.selectArticleByUserId(articleInt);
         String articleAuthor = article.getArticleUserId();
@@ -86,9 +83,9 @@ public class LikeController {
         // User user = userService.selectByUserId("17643537768");
 
         // 进入这里说明用户是登录过了，然后把用户的相关信息存储到Redis的Set中
-        String real = LikeKey.LIKE_KEY.getPrefix() + articleId;
+
         // 这里的值，应该是userId，因为使用userId可以防止用户重复点赞
-        long likeCount = likeService.dislike(real, user.getUserId());
+        long likeCount = likeService.dislike(articleId, user.getUserId());
 
         /**
          Article article = articleService.selectArticleByTwoUserId(articleId);

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.wendao.mapper.LikeMapper">
+
+    <insert id="addLike">
+        insert into `like` (user_id, article_id)
+        values (#{userId}, #{articleId})
+    </insert>
+    <update id="updateLike">
+        UPDATE `like`
+        SET user_id = #{userId}
+        WHERE like_id = #{likeId}
+    </update>
+    <delete id="deleteLikeById">
+        DELETE
+        FROM `like`
+        WHERE user_id = #{userId}
+          and article_id = #{articleId}
+    </delete>
+    <select id="getAllLikes" resultType="com.example.wendao.entity.Like">
+        SELECT *
+        FROM `like`
+    </select>
+    <select id="getLikesByUserId" resultType="com.example.wendao.entity.Like">
+        select *
+        from `like`
+        where user_id = #{userId}
+    </select>
+</mapper>
