@@ -134,4 +134,31 @@ public interface ArticleMapper {
      */
     ArticleUserVo selectAllArticleDetail(int articleId);
 
+    /**
+     * 查询目录下的文章
+     * @param pageNum
+     * @param pageSize
+     * @param categoryId
+     * @return
+     */
+    List<ArticleUserVo> selectArticleListByCategoryId(@Param("pageNum") int pageNum, @Param("pageSize") int pageSize, int categoryId);
+
+    /**
+     * 查询用户发表的文章
+     * @param pageNum
+     * @param pageSize
+     * @param userId
+     * @return
+     */
+    List<Article> selectArticleListByUserId(@Param("pageNum") int pageNum, @Param("pageSize") int pageSize, String userId);
+
+    /**
+     * 查询所有文章
+     * @param pageNum
+     * @param pageSize
+     * @param userId
+     * @return
+     */
+    List<ArticleUserVo> selectArticleList( @Param("pageNum") int pageNum, @Param("pageSize") int pageSize, String userId);
+
 }

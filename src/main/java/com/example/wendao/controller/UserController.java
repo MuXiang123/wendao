@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 
 
 /**
@@ -86,8 +87,10 @@ public class UserController {
                 return new Result<>("请选择jpg,jpeg,gif,png格式的图片");
             }
             String url = userService.uploadImages(file);
+            HashMap<String, String> stringStringHashMap = new HashMap<>();
+            stringStringHashMap.put("url", url);
             if (url != null && !"".equals(url)) {
-                return Result.success(url);
+                return new Result(stringStringHashMap);
             } else {
                 return new Result<>("上传失败");
             }

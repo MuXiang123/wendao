@@ -163,6 +163,7 @@ public class ArticleController {
 
     /**
      * 展示10条热点文章，热点文章是根据文章的浏览量来进行排序
+     *
      * @return
      */
     @GetMapping("/hotspot")
@@ -181,19 +182,50 @@ public class ArticleController {
          */
 
         User user = loginController.getUserInfo(request);
-        log.info("userInfo：{}",user.toString());
+        log.info("userInfo：{}", user.toString());
         // 这里通过用户获取学校信息，由于历史问题出现错误，现在先将其写死为西安科技大学
         String schoolName = user.getSchool();
         log.info("schoolName is :{}", schoolName);
 
         // 写成这样进行测试的话，前端仍然无法根据具体的分类进行展示数据，只能对第一个数据进行展示？？
-        List<ArticleUserVo> articleUserVoList = articleService.selectArticleBySchool(schoolName,categoryId);
+        List<ArticleUserVo> articleUserVoList = articleService.selectArticleBySchool(schoolName, categoryId);
         /*
         for(ArticleUserVo articleUserVo : articleUserVoList){
             log.info("articleUserVo:{}", articleUserVo.toString() + "userSchool:" + user.getSchool());
         }
         */
         return Result.success(articleUserVoList);
+    }
+
+    /**
+     * 获取首页推荐文章
+     *
+     * @param userId
+     * @return
+     */
+    @GetMapping("/index/list")
+    public Result<List<ArticleUserVo>> selectArticleList(@RequestParam String userId,
+                                                         @RequestParam int pageNum,
+                                                         @RequestParam int pageSize) {
+
+        List<ArticleUserVo> articleUserVos = articleService.selectArticleList(userId, pageNum, pageSize);
+        return new Result<>(articleUserVos);
+    }
+
+    @GetMapping("/category/list")
+    public Result<List<ArticleUserVo>> selectArticleListByCategoryId(@RequestParam int category,
+                                                                     @RequestParam int pageNum,
+                                                                     @RequestParam int pageSize) {
+        List<ArticleUserVo> articleUserVos = articleService.selectArticleListByCategoryId(pageNum, pageSize, category);
+        return new Result<>(articleUserVos);
+    }
+
+    @GetMapping("/user/list")
+    public Result<List<Article>> selectArticleListByUserId(@RequestParam String userId,
+                                                           @RequestParam int pageNum,
+                                                           @RequestParam int pageSize) {
+        List<Article> articleList = articleService.selectArticleListByUserId(pageNum, pageSize, userId);
+        return new Result<>(articleList);
     }
 
 }

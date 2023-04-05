@@ -148,6 +148,21 @@ public class ArticleServiceImpl implements ArticleService {
         return dealWithArticleVo(articleList);
     }
 
+    @Override
+    public List<ArticleUserVo> selectArticleList(String userId, int pageNum, int pageSize) {
+        return articleMapper.selectArticleList(pageNum, pageSize, userId);
+    }
+
+    @Override
+    public List<Article> selectArticleListByUserId(int pageNum, int pageSize, String userId) {
+        return articleMapper.selectArticleListByUserId(pageNum, pageSize, userId);
+    }
+
+    @Override
+    public List<ArticleUserVo> selectArticleListByCategoryId(int pageNum, int pageSize, int category) {
+        return articleMapper.selectArticleListByCategoryId(pageNum, pageSize, category);
+    }
+
     public List<ArticleUserVo> dealWithArticleVo(List<Article> articleList) {
         List<ArticleUserVo> articleUserVos = new ArrayList<>();
         for (Article article : articleList) {

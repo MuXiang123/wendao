@@ -125,4 +125,31 @@ public interface ArticleService {
      */
     List<ArticleUserVo> selectArticleByKeywords(String keywords);
 
+
+    /**
+     * 获取首页推荐文章
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    List<ArticleUserVo> selectArticleList(String userId, int pageNum, int pageSize);
+
+    /**
+     * 获取用户发布的文章
+     * @param pageNum
+     * @param pageSize
+     * @param userId
+     * @return
+     */
+    List<Article> selectArticleListByUserId(int pageNum, int pageSize, String userId);
+
+    /**
+     * 获取目录下的id
+     * @param pageNum
+     * @param pageSize
+     * @param category
+     * @return
+     */
+    List<ArticleUserVo> selectArticleListByCategoryId(int pageNum, int pageSize, int category);
 }
