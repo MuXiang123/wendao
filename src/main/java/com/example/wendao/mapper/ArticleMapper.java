@@ -161,4 +161,29 @@ public interface ArticleMapper {
      */
     List<ArticleUserVo> selectArticleList( @Param("pageNum") int pageNum, @Param("pageSize") int pageSize, String userId);
 
+    /**
+     * 查询文章详情
+     * @param articleId
+     * @param userId
+     * @return
+     */
+    ArticleUserVo getArticleDetail(int articleId, String userId);
+
+    /**
+     * 点赞数添加
+     * @param articleId
+     */
+    void addLike(int articleId);
+
+    /**
+     * 点赞数减少
+     * @param articleId
+     */
+    void delLike(int articleId);
+
+    /**
+     * 浏览数添加
+     * @param articleId
+     */
+    void addView(int articleId);
 }

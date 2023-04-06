@@ -23,7 +23,7 @@ public interface LikeMapper {
      * @param userId
      * @param articleId
      */
-    void deleteLikeById(int userId, int articleId);
+    void deleteLikeById(int articleId, String userId);
 
     /**
      * 获取所有点赞列表

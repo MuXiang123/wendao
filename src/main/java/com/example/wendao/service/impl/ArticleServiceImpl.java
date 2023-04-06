@@ -163,6 +163,22 @@ public class ArticleServiceImpl implements ArticleService {
         return articleMapper.selectArticleListByCategoryId(pageNum, pageSize, category);
     }
 
+    @Override
+    public ArticleUserVo getArticleDetail(int articleId, String userId) {
+        articleMapper.addView(articleId);
+        return articleMapper.getArticleDetail(articleId, userId);
+    }
+
+    @Override
+    public void addLike(int articleId) {
+        articleMapper.addLike(articleId);
+    }
+
+    @Override
+    public void delLike(int articleId) {
+        articleMapper.delLike(articleId);
+    }
+
     public List<ArticleUserVo> dealWithArticleVo(List<Article> articleList) {
         List<ArticleUserVo> articleUserVos = new ArrayList<>();
         for (Article article : articleList) {

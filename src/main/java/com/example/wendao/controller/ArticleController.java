@@ -11,6 +11,7 @@ import com.example.wendao.service.UserService;
 import com.example.wendao.utils.CodeMsg;
 import com.example.wendao.utils.Result;
 import com.example.wendao.vo.ArticleUserVo;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -226,6 +227,12 @@ public class ArticleController {
                                                            @RequestParam int pageSize) {
         List<Article> articleList = articleService.selectArticleListByUserId(pageNum, pageSize, userId);
         return new Result<>(articleList);
+    }
+
+    @GetMapping("/detail")
+    public Result<ArticleUserVo> selectArticleListByUserId(@RequestParam int articleId, @RequestParam String userId){
+        ArticleUserVo article= articleService.getArticleDetail(articleId, userId);
+        return new Result<>(article);
     }
 
 }

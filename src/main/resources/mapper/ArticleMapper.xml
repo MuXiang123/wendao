@@ -13,6 +13,13 @@
                 #{articleUserId})
 
     </insert>
+    <insert id="addView">
+        update article
+        <set>
+            article_view_count = article_view_count + 1
+        </set>
+        where article_id = #{articleId}
+    </insert>
     <update id="updateArticle">
         update article
         <set>
@@ -35,6 +42,21 @@
         set is_deleted = 1
         where article_id = #{articleId}
     </delete>
+    <insert id="delLike">
+        update article
+        <set>
+            article_like_count = article_like_count - 1
+        </set>
+        where article_id = #{articleId}
+    </insert>
+
+    <insert id="addLike">
+        update article
+        <set>
+            article_like_count = article_like_count + 1
+        </set>
+        where article_id = #{articleId}
+    </insert>
 
     <select id="selectArticleByArticleId" resultType="com.example.wendao.entity.Article">
         select article_id,
@@ -176,7 +198,8 @@
           and article.is_deleted = 0
     </select>
     <select id="selectAllArticleDetail" resultType="com.example.wendao.vo.ArticleUserVo">
-        select article_title,
+        select article_id,
+               article_title,
                article_summary,
                article_content,
                article_view_count,
@@ -195,7 +218,8 @@
           and article.is_deleted = 0
     </select>
     <select id="selectArticleListByCategoryId" resultType="com.example.wendao.vo.ArticleUserVo">
-        select article_title,
+        select article_id,
+               article_title,
                article_summary,
                article_content,
                article_view_count,
@@ -216,7 +240,8 @@
         order by created_time desc
     </select>
     <select id="selectArticleList" resultType="com.example.wendao.vo.ArticleUserVo">
-        select article_title,
+        select article_id,
+               article_title,
                article_summary,
                article_content,
                article_view_count,
@@ -236,7 +261,8 @@
         order by created_time desc
     </select>
     <select id="selectArticleListByUserId" resultType="com.example.wendao.entity.Article">
-        select article_title,
+        select article_id,
+               article_title,
                article_summary,
                article_content,
                article_view_count,
@@ -251,6 +277,32 @@
         where is_deleted = 0
           and article_user_id = #{userId}
         order by created_time desc
+    </select>
+    <select id="getArticleDetail" resultType="com.example.wendao.vo.ArticleUserVo">
+        SELECT
+            a.article_id,
+            a.article_title,
+            a.article_summary,
+            a.article_content,
+            a.article_view_count,
+            a.article_comment_count,
+            a.article_like_count,
+            a.created_time,
+            a.update_time,
+            a.is_deleted,
+            a.article_category_id,
+            a.article_category_name,
+            a.article_user_id,
+            u.nickname,
+            u.avatar,
+            CASE WHEN l.article_id IS NULL THEN 1 ELSE 0 END AS is_liked
+        FROM
+            article a
+                JOIN user u ON u.user_id = a.article_user_id
+                LEFT JOIN `like` l ON l.article_id = a.article_id AND l.user_id = #{userId}
+        WHERE
+            a.is_deleted = 0
+          AND a.article_id = #{articleId}
     </select>
 
 

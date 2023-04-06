@@ -21,7 +21,7 @@ class LikeMapperTest {
     @Test
     public void testAddLike() {
         Like like = new Like();
-        like.setUserId(1);
+        like.setUserId("1");
         like.setArticleId(100);
 
         likeMapper.addLike(like);
@@ -33,7 +33,7 @@ class LikeMapperTest {
     public void testUpdateLike() {
         Like like = new Like();
         like.setLikeId(1);
-        like.setUserId(2);
+        like.setUserId("1");
 
         likeMapper.updateLike(like);
 
@@ -43,9 +43,9 @@ class LikeMapperTest {
 
     @Test
     public void testDeleteLikeById() {
-        int userId = 1;
+        String userId = "18420051370";
         int article_id = 1;
-        likeMapper.deleteLikeById(userId, article_id);
+        likeMapper.deleteLikeById( article_id,userId);
 
 //        Like deletedLike = likeMapper.getLikeById(likeId);
 //        assertNull(deletedLike);

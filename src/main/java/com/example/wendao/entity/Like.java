@@ -16,5 +16,5 @@ import lombok.NoArgsConstructor;
 public class Like {
     private int likeId;
     private int articleId;
-    private int userId;
+    private String userId;
 }

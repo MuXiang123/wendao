@@ -152,4 +152,24 @@ public interface ArticleService {
      * @return
      */
     List<ArticleUserVo> selectArticleListByCategoryId(int pageNum, int pageSize, int category);
+
+    /**
+     * 获取文章详情
+     * @param articleId
+     * @param userId
+     * @return
+     */
+    ArticleUserVo getArticleDetail(int articleId ,String userId);
+
+    /**
+     * 增加点赞数
+     * @param articleId
+     */
+    void addLike(int articleId);
+
+    /**
+     * 删除点赞数
+     * @param articleId
+     */
+    void delLike(int articleId);
 }

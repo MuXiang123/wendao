@@ -42,9 +42,10 @@ public class LikeServiceImpl implements LikeService {
         String real = LikeKey.LIKE_KEY.getPrefix() + articleId;
         jedisService.sadd(real, userId);
         Like like = new Like();
-        like.setUserId(Integer.parseInt(userId));
+        like.setUserId(userId);
         like.setArticleId(Integer.parseInt(articleId));
         likeMapper.addLike(like);
+        articleService.addLike(Integer.parseInt(articleId));
         return jedisService.scard(real);
     }
 
@@ -52,7 +53,8 @@ public class LikeServiceImpl implements LikeService {
     public long dislike(int articleId, String value) {
         String key = LikeKey.LIKE_KEY.getPrefix() + articleId;
         jedisService.srem(key, value);
-        likeMapper.deleteLikeById(Integer.parseInt(value), articleId);
+        likeMapper.deleteLikeById(articleId, value);
+        articleService.delLike(articleId);
         return jedisService.scard(key);
     }
 
