@@ -67,4 +67,10 @@ public interface CommentMapper {
      * @return
      */
     List<CommentUserVo> selectParentComment(int commentArticleId, int parentId);
+
+    /**
+     * 添加点赞数
+     * @param comment
+     */
+    void updateCommentLike(int comment);
 }

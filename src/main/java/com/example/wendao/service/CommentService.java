@@ -57,4 +57,10 @@ public interface CommentService {
      * @param commentId
      */
     void updateCommentCount(int commentId);
+
+    /**
+     * 点赞评论
+     * @param commentId
+     */
+    void commentLike(int commentId);
 }

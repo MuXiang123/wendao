@@ -61,8 +61,6 @@ public class CommentController {
             return Result.error(CodeMsg.ERROR);
         }
 
-        // 为了方便前后端联调，先统一将user对象写死
-        // User user = userService.selectByUserId("18392710807");
         // 进入到下面来说明用户登录了，将这条评论插入comment表
         Comment comment = new Comment();
         comment.setCommentArticleId(commentDto.getArticleId());
@@ -112,5 +110,11 @@ public class CommentController {
     public Result<List<CommentUserVo>> commentArticleLists(Integer articleId) {
         List<CommentUserVo> commentUserVoList = commentService.selectCommentLists(articleId);
         return Result.success(commentUserVoList);
+    }
+
+    @PostMapping("/comment/like")
+    public Result commentLike(int commentId){
+        commentService.commentLike(commentId);
+        return new Result(true);
     }
 }

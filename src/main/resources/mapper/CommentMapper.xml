@@ -24,6 +24,13 @@
         set comment_count = #{commentCount}
         where comment_id = #{commentId}
     </update>
+    <insert id="updateCommentLike">
+        update comment
+        <set>
+            comment_like_count = comment_like_count + 1
+        </set>
+        where comment_id = #{commentId}
+    </insert>
 
     <delete id="deleteComment">
         delete

@@ -1,5 +1,6 @@
 package com.example.wendao.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.example.wendao.entity.Comment;
 import com.example.wendao.mapper.CommentMapper;
 import com.example.wendao.service.CommentService;
@@ -7,6 +8,7 @@ import com.example.wendao.vo.CommentUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -61,19 +63,13 @@ public class CommentServiceImpl implements CommentService {
      * @return
      */
     private List<CommentUserVo> getParent(List<CommentUserVo> rawComments) {
-//        //对于每一个顶级评论，都将子评论归结到一个集合中
         for (CommentUserVo topComment : rawComments) {
-            System.out.println("评论内容："+topComment.getCommentContent());
             // 将顶级评论的子孙评论归结到一个集合中
             LinkedList<CommentUserVo> comments = new LinkedList<>();
             List<CommentUserVo> replyCmtsByTopCmt = topComment.getReplyCommentList();
             for (CommentUserVo replyComment : replyCmtsByTopCmt) {
-                handleChild(replyComment, comments);
-                replyComment.setReplyNickname(topComment.getNickname());
-                replyComment.setReplyId(topComment.getCommentUserId());
-                replyComment.setCommentContent(topComment.getCommentContent());
-                replyComment.setCommentLikeCount(topComment.getCommentLikeCount());
-                replyComment.setCommentCreatedTime(topComment.getCommentCreatedTime());
+                handleChild(replyComment, comments, topComment.getNickname(), topComment.getCommentUserId(),
+                        topComment.getCommentContent(), topComment.getCommentLikeCount(), topComment.getCommentCreatedTime());
             }
             topComment.setReplyCommentList(comments);
         }
@@ -85,18 +81,20 @@ public class CommentServiceImpl implements CommentService {
      * @param replyComment
      * @param parent
      */
-    private void handleChild(CommentUserVo replyComment, List<CommentUserVo> parent) {
+    private void handleChild(CommentUserVo replyComment, List<CommentUserVo> parent, String replyNickname,
+                             String replyId, String commentContent, int commentLikeCount, Date commentCreatedTime) {
         List<CommentUserVo> grandchildren = replyComment.getReplyCommentList();
         replyComment.setReplyCommentList(null);
+        replyComment.setReplyNickname(replyNickname);
+        replyComment.setReplyId(replyId);
+        replyComment.setCommentContent(replyComment.getCommentContent() != null ? replyComment.getCommentContent() : commentContent);
+        replyComment.setCommentLikeCount(replyComment.getCommentLikeCount() > 0 ? replyComment.getCommentLikeCount() : commentLikeCount);
+        replyComment.setCommentCreatedTime(replyComment.getCommentCreatedTime() != null ? replyComment.getCommentCreatedTime() : commentCreatedTime);
         parent.add(replyComment);
-        for (CommentUserVo grandChild : grandchildren) {
-            grandChild.setReplyNickname(replyComment.getNickname());
-            grandChild.setReplyId(replyComment.getCommentUserId());
-            grandChild.setCommentContent(replyComment.getCommentContent());
-            grandChild.setCommentLikeCount(replyComment.getCommentLikeCount());
-            grandChild.setCommentCreatedTime(replyComment.getCommentCreatedTime());
-            if (grandChild.getReplyCommentList() != null) {
-                handleChild(grandChild, parent);
+        if (grandchildren != null) {
+            for (CommentUserVo grandChild : grandchildren) {
+                handleChild(grandChild, parent, replyComment.getNickname(), replyComment.getCommentUserId(),
+                        replyComment.getCommentContent(), replyComment.getCommentLikeCount(), replyComment.getCommentCreatedTime());
             }
         }
     }
@@ -105,5 +103,10 @@ public class CommentServiceImpl implements CommentService {
     public void updateCommentCount(int commentId) {
         Comment comment = commentMapper.selectCommentById(commentId);
         commentMapper.updateCommentCount(commentId, comment.getCommentCount() + 1);
+    }
+
+    @Override
+    public void commentLike(int commentId) {
+        commentMapper.updateCommentLike(commentId);
     }
 }
