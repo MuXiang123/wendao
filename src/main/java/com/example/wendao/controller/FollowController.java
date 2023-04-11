@@ -18,10 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -163,5 +160,22 @@ public class FollowController {
             log.info("从mysql中查询出来我的关注者");
         }
         return Result.success(usersList);
+    }
+
+    /**
+     * 查询是否关注该用户
+     * @param userId
+     * @param followId
+     * @return
+     */
+    @GetMapping("/isFollow")
+    @ResponseBody
+    public Result<Boolean> isFollow(@RequestParam String userId, @RequestParam String followId) {
+        Follow follow = followService.isFollow(userId, followId);
+        if(follow == null){
+            return new Result(false);
+        }else {
+            return new Result(true);
+        }
     }
 }

@@ -1,9 +1,11 @@
 package com.example.wendao.vo;
 
+import com.example.wendao.entity.Article;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.checkerframework.checker.units.qual.A;
+
+import java.util.List;
 
 /**
  * @author: zhk
@@ -18,4 +20,7 @@ public class UserData {
     private int fansCount;
     private int followCount;
     private int likeCount;
+    private List<Article> articleList;
+    private List<FansVo> fansVoList;
+    private List<FollowVo> followVoList;
 }

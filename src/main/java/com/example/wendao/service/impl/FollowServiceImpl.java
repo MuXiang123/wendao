@@ -1,6 +1,7 @@
 package com.example.wendao.service.impl;
 
 import com.example.wendao.entity.Follow;
+import com.example.wendao.entity.User;
 import com.example.wendao.mapper.FollowMapper;
 import com.example.wendao.service.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,10 @@ public class FollowServiceImpl implements FollowService {
     @Override
     public List<Follow> selectAllFollowByFollowId(String followId) {
         return followMapper.selectAllFollowByFollowId(followId);
+    }
+
+    @Override
+    public Follow isFollow(String userId, String followId) {
+        return followMapper.isFollow(userId, followId);
     }
 }

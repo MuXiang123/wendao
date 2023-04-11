@@ -40,4 +40,11 @@ public interface FollowMapper {
      */
     List<Follow> selectAllFollowByFollowId(String followId);
 
+    /**
+     * 查询是否关注该用户
+     * @param userId
+     * @param followId
+     * @return
+     */
+    Follow isFollow(String userId, String followId);
 }

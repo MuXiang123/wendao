@@ -5,6 +5,10 @@
         insert into follow (user_id, follow_id, created_time)
         values (#{userId}, #{followId}, #{createdTime})
     </insert>
+    <select id="isFollow" resultType="com.example.wendao.entity.Follow">
+        select * from follow
+        where user_id = #{userId} and follow_id = #{followId}
+    </select>
     <delete id="deleteFollow">
         delete
         from follow

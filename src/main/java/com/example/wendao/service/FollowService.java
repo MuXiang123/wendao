@@ -1,6 +1,7 @@
 package com.example.wendao.service;
 
 import com.example.wendao.entity.Follow;
+import com.example.wendao.entity.User;
 
 import java.util.List;
 
@@ -38,4 +39,11 @@ public interface FollowService {
      */
     List<Follow> selectAllFollowByFollowId(String followId);
 
+    /**
+     * 查询是否关注该用户
+     * @param userId
+     * @param followId
+     * @return
+     */
+    Follow isFollow(String userId, String followId);
 }
