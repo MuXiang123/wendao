@@ -47,6 +47,12 @@ public class UserController {
         return Result.success(userService.selectByUserInfoId(userId));
     }
 
+    @GetMapping("/userInfoId")
+    @ResponseBody
+    public Result<UserInfoVo> userInfoById(@RequestParam String userId) {
+        return Result.success(userService.selectByUserInfoId(userId));
+    }
+
     @GetMapping("/userData")
     public Result<UserData> userData(@RequestParam String userId){
         UserData userData = userService.getUserData(userId);
@@ -99,6 +105,7 @@ public class UserController {
         }
 
     }
+
 
 
 }

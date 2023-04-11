@@ -172,4 +172,10 @@ public interface ArticleService {
      * @param articleId
      */
     void delLike(int articleId);
+
+    /**
+     * 查询最后一个文章
+     * @return
+     */
+    Article selectArticleLast();
 }

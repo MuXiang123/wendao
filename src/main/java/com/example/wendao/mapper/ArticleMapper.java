@@ -186,4 +186,10 @@ public interface ArticleMapper {
      * @param articleId
      */
     void addView(int articleId);
+
+    /**
+     * 查询最后一个文章
+     * @return
+     */
+    Article selectArticleLast();
 }

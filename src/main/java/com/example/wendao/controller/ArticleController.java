@@ -77,8 +77,8 @@ public class ArticleController {
         publishUser.setAchieveValue(publishUser.getAchieveValue() + 10);
         userService.updateByUserId(publishUser);
         articleService.insertArticle(article);
-
-        elasticSearchService.saveArticle(article);
+        Article articleEs = articleService.selectArticleLast();
+        elasticSearchService.saveArticle(articleEs);
         return Result.success(true);
     }
 
@@ -221,6 +221,13 @@ public class ArticleController {
         return new Result<>(articleUserVos);
     }
 
+    /**
+     * 查询用户发表的文章
+     * @param userId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     @GetMapping("/user/list")
     public Result<List<Article>> selectArticleListByUserId(@RequestParam String userId,
                                                            @RequestParam int pageNum,

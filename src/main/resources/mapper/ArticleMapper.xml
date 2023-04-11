@@ -304,6 +304,9 @@
             a.is_deleted = 0
           AND a.article_id = #{articleId}
     </select>
+    <select id="selectArticleLast" resultType="com.example.wendao.entity.Article">
+        SELECT * FROM article ORDER BY article_id DESC LIMIT 1
+    </select>
 
 
 </mapper>

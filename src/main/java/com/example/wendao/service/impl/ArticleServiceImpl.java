@@ -179,6 +179,12 @@ public class ArticleServiceImpl implements ArticleService {
         articleMapper.delLike(articleId);
     }
 
+    @Override
+    public Article selectArticleLast() {
+
+        return articleMapper.selectArticleLast();
+    }
+
     public List<ArticleUserVo> dealWithArticleVo(List<Article> articleList) {
         List<ArticleUserVo> articleUserVos = new ArrayList<>();
         for (Article article : articleList) {
