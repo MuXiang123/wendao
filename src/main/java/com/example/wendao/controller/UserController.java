@@ -61,7 +61,7 @@ public class UserController {
 
     @PostMapping("/update/userInfo")
     @ResponseBody
-    public Result<Boolean> updateUserInfo(HttpServletResponse response, @RequestBody User user) {
+    public Result<Boolean> updateUserInfo(HttpServletResponse response, HttpServletRequest request,@RequestBody User user) {
         // 更新之前，需要将从前端传过来的图片信息，上传到腾讯云上去，然后存入数据库的话是一个链接
         // 需要更新的是用户昵称，用户头像，用户性别，用户学校，用户的个性签名
         // 重新设置Cookie，即更新Redis中User的信息
@@ -69,7 +69,7 @@ public class UserController {
         user.setSalt(salt);
         user.setPassword(DigestUtils.md5Hex((user.getPassword() + salt)));
         userService.updateByUserId(user);
-        loginController.addCookie(response, user);
+        loginController.addCookie(response, request, user);
         return Result.success(true);
     }
 

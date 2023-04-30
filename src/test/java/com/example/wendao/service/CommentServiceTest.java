@@ -24,6 +24,7 @@ import java.util.List;
 public class CommentServiceTest {
     @Autowired
     CommentService commentService;
+    int i;
     @Test
     void test1(){
         List<CommentUserVo> commentUserVos = commentService.selectCommentLists(3);

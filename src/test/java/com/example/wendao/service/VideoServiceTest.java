@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -131,5 +133,14 @@ public class VideoServiceTest {
         assertTrue(videoInfo.containsKey("description"));
         assertTrue(videoInfo.containsKey("play"));
         assertTrue(videoInfo.containsKey("pic"));
+    }
+
+    @Test
+    public void test3(){
+        UUID uuid = UUID.randomUUID();
+        long mostSigBits = uuid.getMostSignificantBits();
+        long leastSigBits = uuid.getLeastSignificantBits();
+        long unsignedInt = (mostSigBits & Long.MAX_VALUE) | (leastSigBits >>> 1);
+        System.out.println("随机的32位无符号整数为：" + unsignedInt);
     }
 }
