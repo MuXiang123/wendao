@@ -11,6 +11,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ import java.util.Map;
  * @date: 2023/3/3 16:11
  * @version: 1.0
  */
+@Service
 public class EventConsumer implements InitializingBean, ApplicationContextAware {
 
     private static Logger logger = LoggerFactory.getLogger(EventConsumer.class);

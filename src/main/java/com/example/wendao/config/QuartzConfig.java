@@ -13,7 +13,9 @@ import org.springframework.context.annotation.Configuration;
  * @version: 1.0
  */
 @Configuration
-public class QuartzConfig {private static final String LIKE_TASK_QUARTZ = "LIKE_TASK_QUARTZ";
+public class QuartzConfig {
+
+    private static final String LIKE_TASK_QUARTZ = "LIKE_TASK_QUARTZ";
     private static final String ACHIEVE_VALUE_SORT_QUARTZ = "ACHIEVE_VALUE_SORT_QUARTZ ";
 
     @Bean
