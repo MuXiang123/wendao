@@ -21,7 +21,7 @@
 
 ### 系统功能架构图
 
-![image-20230618141102891](\README.assets\image-20230618141102891.png)
+![image-20230618141102891](https://github.com/MuXiang123/wendao/blob/master/README.assets/image-20230618141102891.png)
 
 
 
@@ -70,7 +70,7 @@ ik分词器下载地址：[Releases · medcl/elasticsearch-analysis-ik (github.c
 
 获取SESSDATA填入yml中。
 
-![image-20230618143345645](README.assets\image-20230618143345645.png) 
+![image-20230618143345645](https://github.com/MuXiang123/wendao/blob/master/README.assets/image-20230618143345645.png) 
 
 ### 开通腾讯云对象存储
 
@@ -132,14 +132,14 @@ ik分词器下载地址：[Releases · medcl/elasticsearch-analysis-ik (github.c
 
 - 同步通知，点赞之后必须等到该操作执行完所有操作（更新点赞数等业务），才能执行后面的代码；
 - 异步通知，点赞之后启动一个新的线程去处理异步通知的业务逻辑，主线程执行后面的代码，互不影响，提升用户体验；
-  ![image-20230618154257092](D:\JavaProject\wendao\README.assets\image-20230618154257092.png)
+  ![image-20230618154257092](https://github.com/MuXiang123/wendao/blob/master/README.assets/image-20230618154257092.png)
   如上图所示，异步通知的设计思路如下，分为业务代码、生产者、消费者、消息队列、统一的接口以及实现类，即：业务代码（如点赞业务）首先将点赞的事件封装成一个eventModel对象，然后将其传给生产者，生产者将该事件推到Redis的list的消息队列中，然后消费者监听有哪些实现类实现了统一的接口，并将其保存至Map中，然后开启一个新的线程不断的从消息队列中消费事件，如果有事件则根据事件的类型（点赞/评论/我的关注），去执行对应的实现类。在实现类中的实现是将事件的具体的内容（如用户A点赞了用户B的文章）保存至数据库中，并且设置有一个属性为has_read属性，默认为0（表示有未读消息），然后前端的实现是启用3秒的定时器轮询的调用接口（这个接口的作用是给前端返回有没有未读数据），如果有未读消息，就会给用户提示，当用户查看了提示的内容之后，将所有通知的has_read属性设置为1（表示没有未读消息)，这样即实现了异步通知的功能。
 
 ### 2 ELK（ElasticSearch+Logstash+Kibana）同步MySQL以及ES搜索和MySQL模糊查询的搜索耗时对比
 
 项目中考虑到文章的数据量只会越来越大，由于在大数据量的情况下，使用mysql的模糊查询的耗时十分巨大，如果给mysql中添加索引这又会带来新的开销，为此采用ES来搜索文章。首先则需要将MySQL的数据和ES的数据进行同步，采用Lostash工具就可以实现同步数据，kibana的作用是提供一个可视化的界面，方便开发人员搜索数据。同步完成之后，需要只需要集成Spring-data-elasticsearch,根据其api接口就可以实现按照文章标题和文章内容模糊查询，并实现了将关键字高亮展示（高亮展示是由前端来完成的，具体的思路为：前端通过搜索框拿到用户搜索的关键词，然后使用正则表达式匹配后端返回数据中的关键字，匹配之后将其样式改为红色标亮展示）。 
 
-![image-20230618153725342](README.assets\image-20230618153725342.png)
+![image-20230618153725342](https://github.com/MuXiang123/wendao/blob/master/README.assets/image-20230618153725342.png)
 
 在指导老师的督促下，要拿数据说话为什么在大数量的情况下ES的搜索耗时要低于MySQL的搜索耗时？为此，自己写程序随机生成了100、1000、10000、100000、600000条数据来进行对比，对比结果如上图所示，得出结论：在数据量大于100000的时候，ES的搜索耗时已经优于MySQL了，数据量越大时，差距更加明显。
 
@@ -154,14 +154,14 @@ ik分词器下载地址：[Releases · medcl/elasticsearch-analysis-ik (github.c
 
 # 项目部分截图
 
-![image-20230618145555356](README.assets\image-20230618145555356.png)
+![image-20230618145555356](https://github.com/MuXiang123/wendao/blob/master/README.assets/image-20230618145555356.png)
 
-![image-20230618145547696](README.assets\image-20230618145547696.png)
+![image-20230618145547696](https://github.com/MuXiang123/wendao/blob/master/README.assets/image-20230618145547696.png)
 
-![image-20230618145607492](README.assets\image-20230618145607492.png)
+![image-20230618145607492](https://github.com/MuXiang123/wendao/blob/master/README.assets/image-20230618145607492.png)
 
-![image-20230618145620718](README.assets\image-20230618145620718.png)
+![image-20230618145620718](https://github.com/MuXiang123/wendao/blob/master/README.assets/image-20230618145620718.png)
 
-![image-20230618145630355](README.assets\image-20230618145630355.png)
+![image-20230618145630355](https://github.com/MuXiang123/wendao/blob/master/README.assets/image-20230618145630355.png)
 
-![image-20230618145636746](README.assets\image-20230618145636746.png)
+![image-20230618145636746](https://github.com/MuXiang123/wendao/blob/master/README.assets/image-20230618145636746.png)
