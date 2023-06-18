@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,35 +45,26 @@ public class FansController {
 
     @GetMapping("/fans/list")
     @ResponseBody
-    public Result<List<User>> fansList(HttpServletRequest request) {
-
-        User user = loginController.getUserInfo(request);
-
-        // User user = userService.selectByUserId("18392710807");
-        if (user == null) {
-            return Result.error(CodeMsg.ERROR);
-        } else {
-            String userId = user.getUserId();
-            String realKey = FansKey.fansKey.getPrefix() + userId;
-            Set<String> set = jedisService.smembers(realKey);
-            List<User> usersList = new ArrayList<>();
-            if (!set.isEmpty()) {
-                // 这个set里面全部存储的userId,注意是String类型,然后根据这个来查询出User的信息
-                for (String str : set) {
-                    User u = userService.selectByUserId(str);
-                    usersList.add(u);
-                }
-                log.info("从Redis中获取我的粉丝列表");
-            } else {
-                // 如果从Redis拿不到数据的话，就要从mysql中取数据
-                List<Fans> fansList = fansService.selectAllFansByUserId(userId);
-                for (Fans fans : fansList) {
-                    User u = userService.selectByUserId(fans.getFansId());
-                    usersList.add(u);
-                }
-                log.info("从mysql中获取粉丝列表");
+    public Result<List<User>> fansList(@RequestParam String userId) {
+        String realKey = FansKey.fansKey.getPrefix() + userId;
+        Set<String> set = jedisService.smembers(realKey);
+        List<User> usersList = new ArrayList<>();
+        if (!set.isEmpty()) {
+            // 这个set里面全部存储的userId,注意是String类型,然后根据这个来查询出User的信息
+            for (String str : set) {
+                User u = userService.selectByUserId(str);
+                usersList.add(u);
             }
-            return Result.success(usersList);
+            log.info("从Redis中获取我的粉丝列表");
+        } else {
+            // 如果从Redis拿不到数据的话，就要从mysql中取数据
+            List<Fans> fansList = fansService.selectAllFansByUserId(userId);
+            for (Fans fans : fansList) {
+                User u = userService.selectByUserId(fans.getFansId());
+                usersList.add(u);
+            }
+            log.info("从mysql中获取粉丝列表");
         }
+        return Result.success(usersList);
     }
 }

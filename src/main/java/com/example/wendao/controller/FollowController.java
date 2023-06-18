@@ -133,13 +133,7 @@ public class FollowController {
      */
     @GetMapping("/list")
     @ResponseBody
-    public Result<List<User>> followList(HttpServletRequest request) {
-        User user = loginController.getUserInfo(request);
-        if (user == null) {
-            return Result.error(CodeMsg.NOT_LOGIN);
-        }
-        // User user = userService.selectByUserId("17643537768");
-        String userId = user.getUserId();
+    public Result<List<User>> followList(@RequestParam String userId) {
         String realKey = FollowKey.followKey.getPrefix() + userId;
         Set<String> set = jedisService.smembers(realKey);
         List<User> usersList = new ArrayList<>();

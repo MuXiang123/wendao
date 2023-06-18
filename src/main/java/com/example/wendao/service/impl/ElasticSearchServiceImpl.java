@@ -48,8 +48,11 @@ public class ElasticSearchServiceImpl implements ElasticSearchService {
     @Override
     public List<Article> searchArticle(String keywords) {
         NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
-                .withQuery(QueryBuilders.matchPhraseQuery("article_title", keywords))
-                .withQuery(QueryBuilders.matchPhraseQuery("article_content", keywords))
+                .withQuery(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchPhraseQuery("article_title", keywords))
+                        .should(QueryBuilders.matchPhraseQuery("article_summary", keywords))
+                        .should(QueryBuilders.matchPhraseQuery("article_content", keywords))
+                )
                 .withPageable(PageRequest.of(0, 9))
                 .build();
         SearchHits<Article> search = restTemplate.search(nativeSearchQuery, Article.class);
