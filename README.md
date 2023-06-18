@@ -1,39 +1,37 @@
-# Read Me First
+# 项目简介
 
-The following was discovered as part of building this project:
+2023年毕设、校园论坛、网上社区这一类的项目。
 
-* The JVM level was changed from '1.8' to '17', review
-  the [JDK Version Range](https://github.com/spring-projects/spring-framework/wiki/Spring-Framework-Versions#jdk-version-range)
-  on the wiki for more details.
+**前端: **
 
-# Getting Started
+### 技术栈
 
-### Reference Documentation
+- 后端： SpringBoot SpringMVC Mybatis Redis ElasticSearch Quartz
+- 前端： vue Element-UI Axios
 
-For further reference, please consider the following sections:
+### 主要功能
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/3.0.3/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/3.0.3/maven-plugin/reference/html/#build-image)
-* [Spring Security](https://docs.spring.io/spring-boot/docs/3.0.3/reference/htmlsingle/#web.security)
-* [Spring Boot DevTools](https://docs.spring.io/spring-boot/docs/3.0.3/reference/htmlsingle/#using.devtools)
-* [Spring Web](https://docs.spring.io/spring-boot/docs/3.0.3/reference/htmlsingle/#web)
-* [OAuth2 Client](https://docs.spring.io/spring-boot/docs/3.0.3/reference/htmlsingle/#web.security.oauth2.client)
-* [Spring Data Redis (Access+Driver)](https://docs.spring.io/spring-boot/docs/3.0.3/reference/htmlsingle/#data.nosql.redis)
-* [Spring Data Elasticsearch (Access+Driver)](https://docs.spring.io/spring-boot/docs/3.0.3/reference/htmlsingle/#data.nosql.elasticsearch)
-* [Spring Data JDBC](https://docs.spring.io/spring-boot/docs/3.0.3/reference/htmlsingle/#data.sql.jdbc)
+本系统主要包括用户模块、文章模块、通信模块、视频模块、搜索功能等模块。其中，用户模块主要负责用户的注册、登录、信息修改等操作；文章管理模块主要负责问题的发布、浏览、回答等操作；私信管理模块主要负责私信的发送、接收等操作；视频管理模块主要负责视频的浏览等操作；搜索管理模块主要负责问题的搜索和答案的搜索等操作。
 
-### Guides
+### 系统功能架构图
 
-The following guides illustrate how to use some features concretely:
+![image-20230618141102891](D:\JavaProject\wendao\README.assets\image-20230618141102891.png)
 
-* [Securing a Web Application](https://spring.io/guides/gs/securing-web/)
-* [Spring Boot and OAuth2](https://spring.io/guides/tutorials/spring-boot-oauth2/)
-* [Authenticating a User with LDAP](https://spring.io/guides/gs/authenticating-ldap/)
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
-* [Messaging with Redis](https://spring.io/guides/gs/messaging-redis/)
-* [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
-* [Using Spring Data JDBC](https://github.com/spring-projects/spring-data-examples/tree/master/jdbc/basics)
 
+
+# 如何部署
+
+## 环境配置
+
+- JDK 1.8
+- Elasticsearch-7.0.0
+- Redis （本地开发下载的是windows版本）自己用的是3.0.x版本
+- MySQL 8.0及以上
+- Nginx （我使用的版本是1.22.1）
+
+### 部署步骤
+
+1. 导入数据库，数据库名为``wendao``
+2. 修改application-dev.yml中的内容
+3. 启动redis和ElasticSearch
+4. 启动项目
