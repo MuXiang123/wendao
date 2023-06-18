@@ -8,7 +8,7 @@
 
 2023年毕设、校园论坛、网上社区、仿牛客论坛这一类的项目。
 
-**前端: **
+**前端项目: **[MuXiang123/wendao-vue (github.com)](https://github.com/MuXiang123/wendao-vue)
 
 ### 技术栈
 
@@ -61,6 +61,29 @@ redis下载链接 ：[Releases · tporadowski/redis (github.com)](https://github
 ik分词器下载地址：[Releases · medcl/elasticsearch-analysis-ik (github.com)](https://github.com/medcl/elasticsearch-analysis-ik/releases)
 
 不会安装可以百度教程。
+
+### Nginx配置
+
+Nginx安装教程 [Nginx系列：windows10系统下安装nginx的安装并配置！_windows10安装nginx_陈永佳的博客-CSDN博客](https://blog.csdn.net/Mrs_chens/article/details/92961608)
+
+本项目使用的nginx是1.22.1版本。
+
+安装完成后进行配置，在nginx -> conf -> nginx.conf 中添加server配置，安装实际的前端和后端项目进行设置。
+
+```
+server{
+        listen  7777;  //这里是你想要映射出来的端口
+        # server_name  127.0.0.1;
+        location /{
+            proxy_pass http://127.0.0.1:5173;  //这是前端的host
+        }
+        location /api/{
+            proxy_pass http://127.0.0.1:8081/;  //这是后端的host
+        }
+    }
+```
+
+
 
 # 配置文件中的问题
 
