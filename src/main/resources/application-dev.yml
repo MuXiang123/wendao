@@ -1,0 +1,71 @@
+server:
+  port: 8081
+
+cookie: SESSDATA=  #这里填写bilibili的cookie
+
+#druid
+spring:
+  profiles: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/wendao?characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: #数据库用户名
+    password: #数据库密码
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 5
+    minIdle: 10
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    maxEvictableIdleTimeMillis: 900000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat,wall,log4j
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500;
+  #redis
+  redis:
+    host: localhost
+    port: 6379  #redis端口号
+    timeout: 1000
+    jedis:
+      pool:
+        max-active: 1000
+        max-idle: 800
+        min-idle: 500
+        max-wait: 500
+  elasticsearch:
+    rest:
+      uris: localhost:9200 #es的host
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
+
+
+logging:
+  level:
+    root: info
+    com.example.wendao.mapper: debug
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+  type-aliases-package: com.example.wendao.entity
+  configuration:
+    map-underscore-to-camel-case: true  #开启驼峰命名法转换
+
+pagehelper:
+  helper-dialect: mysql
+  reasonable: false
+  support-methods-arguments: true
+
+#腾讯云对象存储，用于上传下载图片功能
+tencent:
+  cos:
+    secretId:  #填写
+    secretKey:  #填写
