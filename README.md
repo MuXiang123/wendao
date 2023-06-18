@@ -21,7 +21,7 @@
 
 ### 系统功能架构图
 
-![image-20230618141102891](D:\JavaProject\wendao\README.assets\image-20230618141102891.png)
+![image-20230618141102891](\README.assets\image-20230618141102891.png)
 
 
 
@@ -70,7 +70,7 @@ ik分词器下载地址：[Releases · medcl/elasticsearch-analysis-ik (github.c
 
 获取SESSDATA填入yml中。
 
-![image-20230618143345645](D:\JavaProject\wendao\README.assets\image-20230618143345645.png) 
+![image-20230618143345645](README.assets\image-20230618143345645.png) 
 
 ### 开通腾讯云对象存储
 
@@ -139,7 +139,7 @@ ik分词器下载地址：[Releases · medcl/elasticsearch-analysis-ik (github.c
 
 项目中考虑到文章的数据量只会越来越大，由于在大数据量的情况下，使用mysql的模糊查询的耗时十分巨大，如果给mysql中添加索引这又会带来新的开销，为此采用ES来搜索文章。首先则需要将MySQL的数据和ES的数据进行同步，采用Lostash工具就可以实现同步数据，kibana的作用是提供一个可视化的界面，方便开发人员搜索数据。同步完成之后，需要只需要集成Spring-data-elasticsearch,根据其api接口就可以实现按照文章标题和文章内容模糊查询，并实现了将关键字高亮展示（高亮展示是由前端来完成的，具体的思路为：前端通过搜索框拿到用户搜索的关键词，然后使用正则表达式匹配后端返回数据中的关键字，匹配之后将其样式改为红色标亮展示）。 
 
-![image-20230618153725342](D:\JavaProject\wendao\README.assets\image-20230618153725342.png)
+![image-20230618153725342](README.assets\image-20230618153725342.png)
 
 在指导老师的督促下，要拿数据说话为什么在大数量的情况下ES的搜索耗时要低于MySQL的搜索耗时？为此，自己写程序随机生成了100、1000、10000、100000、600000条数据来进行对比，对比结果如上图所示，得出结论：在数据量大于100000的时候，ES的搜索耗时已经优于MySQL了，数据量越大时，差距更加明显。
 
@@ -154,14 +154,14 @@ ik分词器下载地址：[Releases · medcl/elasticsearch-analysis-ik (github.c
 
 # 项目部分截图
 
-![image-20230618145555356](D:\JavaProject\wendao\README.assets\image-20230618145555356.png)
+![image-20230618145555356](README.assets\image-20230618145555356.png)
 
-![image-20230618145547696](D:\JavaProject\wendao\README.assets\image-20230618145547696.png)
+![image-20230618145547696](README.assets\image-20230618145547696.png)
 
-![image-20230618145607492](D:\JavaProject\wendao\README.assets\image-20230618145607492.png)
+![image-20230618145607492](README.assets\image-20230618145607492.png)
 
-![image-20230618145620718](D:\JavaProject\wendao\README.assets\image-20230618145620718.png)
+![image-20230618145620718](README.assets\image-20230618145620718.png)
 
-![image-20230618145630355](D:\JavaProject\wendao\README.assets\image-20230618145630355.png)
+![image-20230618145630355](README.assets\image-20230618145630355.png)
 
-![image-20230618145636746](D:\JavaProject\wendao\README.assets\image-20230618145636746.png)
+![image-20230618145636746](README.assets\image-20230618145636746.png)
